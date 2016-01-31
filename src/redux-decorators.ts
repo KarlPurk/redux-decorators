@@ -23,6 +23,17 @@ export function Reducer(target) {
     reducer = target.prototype.reducer;
 }
 
+export interface IReducer {
+    reducer(state, action);
+}
+
+export class BaseStore {
+    protected appStore;
+    protected dispatch(action) {
+        this.appStore.dispatch(action);
+    }
+}
+
 export function State(target) {
     console.log('State');
     if (target.stateProperties === undefined) {

@@ -1,15 +1,21 @@
 import {createStore} from 'redux';
 
-let reducer = null;
+let reducer;
+let reducers = [];
 let appStore = null;
+let reducerInitialState = {};
+
+function getReducer() {
+    return reducer || DefaultReducer.prototype.reducer;
+}
 
 function getStore() {
     if (!appStore) {
         appStore = new Promise((resolve) => {
             var interval = setInterval(() => {
-                if (reducer) {
+                if (getReducer()) {
                     clearInterval(interval);
-                    resolve(createStore(reducer));
+                    resolve(createStore(getReducer()));
                 }
             });
         });
@@ -17,14 +23,37 @@ function getStore() {
     return appStore;
 }
 
-export function Reducer(target) {
-    console.log('Reducer');
-    console.log(target);
-    reducer = target.prototype.reducer;
+export function InitialState(initialState: any) {
+    reducerInitialState = initialState;
+    console.log('@InitialState: ', initialState);
+    return function(target: any) {}
 }
 
 export interface IReducer {
     reducer(state, action);
+}
+
+class DefaultReducer implements IReducer {
+    reducer(state = reducerInitialState, action) {
+        let actionReducers = reducers.filter((r) => r.type === action.type);
+        if (actionReducers.length) {
+            return actionReducers.reduce((s, r) => r.method(s), state);
+        }
+        return state;
+    }
+}
+
+export function Reducer(...methods) {
+    return function(target) {
+        console.log('@ActionReducer: ', target);
+        if (target.prototype.reducer) {
+            reducer = target.prototype.reducer;
+        }
+        reducers = reducers.concat(methods.map((m) => { return {
+            type: m,
+            method: target.prototype[m]
+        }}));
+    }
 }
 
 export interface IStore {
@@ -41,21 +70,22 @@ export class BaseStore implements IStore {
     }
 }
 
-export function State(target) {
-    console.log('State');
-    if (target.stateProperties === undefined) {
-            target.stateProperties = [];
+export function State() {
+    return function(target) {
+        console.log('@State: ', target);
+        if (target.stateProperties === undefined) {
+                target.stateProperties = [];
+        }
+        var args = Array.prototype.slice.call(arguments);
+        args.shift();
+        target.stateProperties = target.stateProperties.concat(args);
     }
-    var args = Array.prototype.slice.call(arguments);
-    args.shift();
-    target.stateProperties = target.stateProperties.concat(args);
-    console.log(target.stateProperties);
 }
 
 export function Store(...properties) {
     var stateProperties = Array.prototype.slice.call(arguments);
     return function(target) {
-        console.log('Store');
+        console.log('@Store: ', target);
         var existingNgOnInit = target.prototype.ngOnInit;
         var existingNgOnDestroy = target.prototype.ngOnDestroy;
         if (target.prototype.stateProperties === undefined) {

@@ -37,7 +37,7 @@ class DefaultReducer implements IReducer {
     reducer(state = reducerInitialState, action) {
         let actionReducers = reducers.filter((r) => r.type === action.type);
         if (actionReducers.length) {
-            return actionReducers.reduce((s, r) => r.method(s), state);
+            return actionReducers.reduce((s, r) => Object.assign(s, r.method(s)), state);
         }
         return state;
     }

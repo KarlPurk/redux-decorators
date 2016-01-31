@@ -30,7 +30,9 @@ export interface IReducer {
 export class BaseStore {
     protected appStore;
     protected dispatch(action) {
-        this.appStore.dispatch(action);
+        var args = Array.prototype.slice.call(arguments);
+        args.shift();
+        this.appStore.dispatch({type: action, data: args});
     }
 }
 
@@ -45,39 +47,37 @@ export function State(target) {
     console.log(target.stateProperties);
 }
 
-export function Store(/*target*/) {
-    console.log('Store');
-    var args = Array.prototype.slice.call(arguments);
-    console.log(this, args);
-    let target = args[args.length - 1];
-    let stateProperties = args.length > 1 ? args.slice(0, args.length - 1) : [];
-    var existingNgOnInit = target.prototype.ngOnInit;
-    var existingNgOnDestroy = target.prototype.ngOnDestroy;
-    if (target.prototype.stateProperties === undefined) {
-        target.prototype.stateProperties = [];
-    }
-    if (this instanceof String) {
-        target.prototype.stateProperties.push(this);
-    }
-    console.log(target.prototype.stateProperties);
-    target.prototype.stateProperties = target.prototype.stateProperties.concat(stateProperties);
-    target.prototype.ngOnInit = function() {
-        let storeUpdateHandler = () => {
-            let state = this.appStore.getState( );
-            this.stateProperties.forEach((prop) => {
-                this[prop] = state[prop];
+export function Store(...properties) {
+    var stateProperties = Array.prototype.slice.call(arguments);
+    return function(target) {
+        console.log('Store');
+        var existingNgOnInit = target.prototype.ngOnInit;
+        var existingNgOnDestroy = target.prototype.ngOnDestroy;
+        if (target.prototype.stateProperties === undefined) {
+            target.prototype.stateProperties = [];
+        }
+        if (this instanceof String) {
+            target.prototype.stateProperties.push(this);
+        }
+        target.prototype.stateProperties = target.prototype.stateProperties.concat(stateProperties);
+        target.prototype.ngOnInit = function() {
+            let storeUpdateHandler = () => {
+                let state = this.appStore.getState( );
+                this.stateProperties.forEach((prop) => {
+                    this[prop] = state[prop];
+                });
+            };
+            getStore().then((appStore) => {
+                this.appStore = appStore;
+                this.unsubscribe = this.appStore.subscribe(storeUpdateHandler);
+                // Apply the default state to all listeners
+                storeUpdateHandler();
             });
-        };
-        getStore().then((appStore) => {
-            this.appStore = appStore;
-            this.unsubscribe = this.appStore.subscribe(storeUpdateHandler);
-            // Apply the default state to all listeners
-            storeUpdateHandler();
-        });
-        !existingNgOnInit || existingNgOnInit();
-    }
-    target.prototype.ngOnDestroy = function() {
-        this.unsubscribe();
-        !existingNgOnDestroy || existingNgOnDestroy();
+            !existingNgOnInit || existingNgOnInit();
+        }
+        target.prototype.ngOnDestroy = function() {
+            this.unsubscribe();
+            !existingNgOnDestroy || existingNgOnDestroy();
+        }
     }
 }

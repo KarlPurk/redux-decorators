@@ -56,6 +56,9 @@ export function Store(/*target*/) {
     if (target.prototype.stateProperties === undefined) {
         target.prototype.stateProperties = [];
     }
+    if (this instanceof String) {
+        target.prototype.stateProperties.push(this);
+    }
     console.log(target.prototype.stateProperties);
     target.prototype.stateProperties = target.prototype.stateProperties.concat(stateProperties);
     target.prototype.ngOnInit = function() {

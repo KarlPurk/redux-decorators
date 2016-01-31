@@ -1,8 +1,32 @@
+import {createStore} from 'redux';
+
+let reducer = null;
+let appStore = null;
+
+function getStore() {
+    if (!appStore) {
+        appStore = new Promise((resolve) => {
+            var interval = setInterval(() => {
+                if (reducer) {
+                    clearInterval(interval);
+                    resolve(createStore(reducer));
+                }
+            });
+        });
+    }
+    return appStore;
+}
+
+export function Reducer(target) {
+    console.log('Reducer');
+    console.log(target);
+    reducer = target.prototype.reducer;
+}
 
 export function State(target) {
     console.log('State');
     if (target.stateProperties === undefined) {
-        target.stateProperties = [];
+            target.stateProperties = [];
     }
     var args = Array.prototype.slice.call(arguments);
     args.shift();
@@ -30,10 +54,13 @@ export function Store(/*target*/) {
                 this[prop] = state[prop];
             });
         };
-        this.unsubscribe = this.appStore.subscribe(storeUpdateHandler);
+        getStore().then((appStore) => {
+            this.appStore = appStore;
+            this.unsubscribe = this.appStore.subscribe(storeUpdateHandler);
+            // Apply the default state to all listeners
+            storeUpdateHandler();
+        });
         !existingNgOnInit || existingNgOnInit();
-        // Apply the default state to all listeners
-        storeUpdateHandler();
     }
     target.prototype.ngOnDestroy = function() {
         this.unsubscribe();

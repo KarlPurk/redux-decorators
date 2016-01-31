@@ -27,9 +27,14 @@ export interface IReducer {
     reducer(state, action);
 }
 
-export class BaseStore {
-    protected appStore;
-    protected dispatch(action) {
+export interface IStore {
+    appStore;
+    dispatch(action);
+}
+
+export class BaseStore implements IStore {
+    appStore;
+    dispatch(action) {
         var args = Array.prototype.slice.call(arguments);
         args.shift();
         this.appStore.dispatch({type: action, data: args});

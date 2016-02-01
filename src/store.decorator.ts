@@ -40,9 +40,6 @@ export function Store(...properties) {
         if (target.prototype.stateProperties === undefined) {
             target.prototype.stateProperties = [];
         }
-        if (this instanceof String) {
-            target.prototype.stateProperties.push(this);
-        }
         target.prototype.stateProperties = target.prototype.stateProperties.concat(stateProperties);
         target.prototype.ngOnInit = function() {
             let storeUpdateHandler = () => {

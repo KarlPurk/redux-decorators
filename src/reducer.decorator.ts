@@ -24,15 +24,28 @@ class DefaultReducer implements IReducer {
     }
 }
 
+let handleActionReducer = function(target, methods) {
+    reducers.push({
+        type: methods[0],
+        method: target[methods[0]]
+    });
+}
+let handleRootReducer = function(target, methods) {
+    if (target.prototype.reducer) {
+        reducer = target.prototype.reducer;
+    }
+    reducers = reducers.concat(methods.map((m) => { return {
+        type: m,
+        method: target.prototype[m]
+    }}));
+}
+
 export function Reducer(...methods) {
     return function(target) {
-        console.log('@ActionReducer: ', target);
-        if (target.prototype.reducer) {
-            reducer = target.prototype.reducer;
+        if (!target.prototype) {
+            handleActionReducer(target, methods);
+            return;
         }
-        reducers = reducers.concat(methods.map((m) => { return {
-            type: m,
-            method: target.prototype[m]
-        }}));
+        handleRootReducer(target, methods);
     }
 }

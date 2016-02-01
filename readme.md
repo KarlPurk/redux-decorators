@@ -65,15 +65,13 @@ Notice also the `dispatch()` method in the template.  This is delegate method is
 ```
 import {bootstrap} from 'angular2/platform/browser';
 import {AppComponent} from './app.component';
-import {AppReducer} from './app.reducer';
+import './app.reducer';
 
-bootstrap(AppComponent, [AppReducer]);
+bootstrap(AppComponent);
 ```
 
-In the above example we've imported the `AppReducer` we created in `app.reducer.ts`
-and registered it as a dependency of the application.  In reality we don't need
-to register this with Angular 2, all we need to do is ensure that the code in
-`app.reducer.ts` is run.
+In the above example we've imported the `app.reducer` as a side-effect only
+module - that's all we need to do.
 
 # API
 

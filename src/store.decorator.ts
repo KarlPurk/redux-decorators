@@ -19,16 +19,9 @@ export function getStore() {
 
 export interface IStore {
     appStore;
+    stateProperties;
+    unsubscribe;
     dispatch(action);
-}
-
-export class BaseStore implements IStore {
-    appStore;
-    dispatch(action) {
-        var args = Array.prototype.slice.call(arguments);
-        args.shift();
-        this.appStore.dispatch({type: action, data: args});
-    }
 }
 
 export function Store(...properties) {
@@ -56,6 +49,9 @@ export function Store(...properties) {
             });
             !existingNgOnInit || existingNgOnInit();
         }
+        target.prototype.dispatch = function(action, ...data) {
+            this.appStore.dispatch({type: action, data: data});
+        };
         target.prototype.ngOnDestroy = function() {
             this.unsubscribe();
             !existingNgOnDestroy || existingNgOnDestroy();

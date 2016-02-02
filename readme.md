@@ -37,7 +37,7 @@ method to update the state for that particular action.
 **count.component.ts**
 ```
 import {Component} from 'angular2/core';
-import {BaseStore, Store} from './../src/redux-decorators';
+import {Store} from './../src/redux-decorators';
 
 @Component({
     selector: 'counter',
@@ -49,7 +49,7 @@ import {BaseStore, Store} from './../src/redux-decorators';
 })
 
 @Store('count')
-export class CounterComponent extends BaseStore {}
+export class CounterComponent {}
 ```
 
 In the above example we've used the `@Store('count')` decorator to register the
@@ -59,7 +59,7 @@ state will be automatically pushed through to the `count` property of this
 component.
 
 Notice also the `dispatch()` method in the template.  This is delegate method is
- provided by the `BaseStore` and can be used to easily dispatch an action.  
+ provided by the `@Store()` decorator and can be used to easily dispatch an action.  
 
 **boot.ts**
 ```
@@ -143,7 +143,7 @@ state updates when the store is updated.
 
 ```
 @Store()
-class TodoListComponent extends BaseStore {
+class TodoListComponent {
    ...
 }
 ```
@@ -154,7 +154,7 @@ or you can declare these properties when you declare the `@Store()` decorator:
 
 ```
 @Store('todos')
-class TodoListComponent extends BaseStore {
+class TodoListComponent {
    ...
 }
 ```
@@ -171,7 +171,7 @@ The `@State()` decorator is used to identify a state property in the application
 
 ```
 @Store()
-class TodoListComponent extends BaseStore {
+class TodoListComponent {
    @State() todos:Todo[] = [];
    ...
 }
@@ -181,10 +181,6 @@ In the above example we are declaring that the `todos` property of the
 `TodoListComponent` should be automatically updated whenever the application
 store's `todos` property is changed.  Please also refer to the `@Store()`
 equivalent.
-
-## Classes
-
-1. BaseStore
 
 ## Interfaces
 

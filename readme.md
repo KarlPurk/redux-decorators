@@ -166,9 +166,6 @@ equivalent.
 1. IReducer
 2. IStore
 
-# Motivation
-The main motivation behind this project was to learn more about TypeScript, Angular 2 and Redux while improving the syntax for implementing Redux in Angular 2 applications.
-
 # Disclaimer
 My experience of Angular 2, Redux and TypeScript is limited.  This project has
 been used as a learning experience.  With this in mind, any corrections in terms

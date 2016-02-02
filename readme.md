@@ -9,7 +9,7 @@ A ridiculously good syntax for working with Redux and TypeScript.  Currently lim
 # Example Usage (Angular 2)
 
 **app.reducer.ts**
-```
+```js
 import {InitialState, Reducer} from 'redux-decorators';
 
 @InitialState({
@@ -27,7 +27,7 @@ corresponding method will be called on the `AppReducer` class, allowing the
 method to update the state for that particular action.
 
 **count.component.ts**
-```
+```js
 import {Component} from 'angular2/core';
 import {Store} from 'redux-decorators';
 
@@ -54,7 +54,7 @@ Notice also the `dispatch()` method in the template.  This is delegate method is
  provided by the `@Store()` decorator and can be used to easily dispatch an action.  
 
 **boot.ts**
-```
+```js
 import {bootstrap} from 'angular2/platform/browser';
 import {AppComponent} from './app.component';
 import './app.reducer';
@@ -82,7 +82,7 @@ The `@Reducer()` decorator registers a new root reducer if the class you are
 decorating contains a reducer method.
 
 **Root Reducer**
-```
+```js
 @Reducer()
 class MyRootReducer implements IReducer {
     reducer(state = initialState, action) {
@@ -98,7 +98,7 @@ of the box.
 
 **Action Reducers**  
 We can mark individual methods as action reducers.
-```
+```js
 class MyReducers {
     @Reducer('add') add(state): { return { count: state.count + 1; } }
     @Reducer('remove') remove(state): { return { count: state.count - 1; } }
@@ -107,7 +107,7 @@ class MyReducers {
 
 Alternatively we can mark multiple methods at once using `@Reducer()`:
 
-```
+```js
 @Reducer('add', 'remove')
 class MyReducers {
     add(state): { return { count: state.count + 1; } }
@@ -120,7 +120,7 @@ The `@Store()` decorator is used to identify a store component.  A store compone
 is automatically subscribed to the application store and receives registered
 state updates when the store is updated.
 
-```
+```js
 @Store()
 class TodoListComponent {
    ...
@@ -131,7 +131,7 @@ You'll also need to declare which properties are updated by the application stor
 You can do that by explicitly decorating each property with the `@State()` decorator,
 or you can declare these properties when you declare the `@Store()` decorator:  
 
-```
+```js
 @Store('todos')
 class TodoListComponent {
    ...
@@ -148,7 +148,7 @@ The `@State()` decorator is used to identify a state property in the application
  store.  Identifying state properties allow the property to be automatically
  updated when the application store's property changes.
 
-```
+```js
 @Store()
 class TodoListComponent {
    @State() todos:Todo[] = [];

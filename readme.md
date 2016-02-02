@@ -75,6 +75,7 @@ The `@InitialState` decorator is used for setting the initial state of the
 application store.
 
 ### @Reducer()
+
 The `Reducer()` decorator is used to identify a root reducer, however it can also
 be used as a convenience method for setting multiple action reducers in a single call.  
 
@@ -116,6 +117,7 @@ class MyReducers {
 ```
 
 ### @Store()
+
 The `@Store()` decorator is used to identify a store component.  A store component
 is automatically subscribed to the application store and receives registered
 state updates when the store is updated.
@@ -167,6 +169,7 @@ equivalent.
 2. IStore
 
 # Disclaimer
+
 My experience of Angular 2, Redux and TypeScript is limited.  This project has
 been used as a learning experience.  With this in mind, any corrections in terms
 of terminology, best practices, oversights, etc. would be greatly received.

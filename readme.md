@@ -2,14 +2,6 @@
 
 A ridiculously good syntax for working with Redux and TypeScript.  Currently limited to Angular 2 but could potentially be used elsewhere.
 
-# Motivation
-The main motivation behind this project was to learn more about TypeScript, Angular 2 and Redux while improving the syntax for implementing Redux in Angular 2 applications.
-
-# Disclaimer
-My experience of Angular 2, Redux and TypeScript is limited.  This project has
-been used as a learning experience.  With this in mind, any corrections in terms
-of terminology, best practices, oversights, etc. would be greatly received.
-
 # Installation
 
 `TBC`
@@ -18,7 +10,7 @@ of terminology, best practices, oversights, etc. would be greatly received.
 
 **app.reducer.ts**
 ```
-import {InitialState, Reducer} from '../src/redux-decorators';
+import {InitialState, Reducer} from 'redux-decorators';
 
 @InitialState({
     count: 0
@@ -37,7 +29,7 @@ method to update the state for that particular action.
 **count.component.ts**
 ```
 import {Component} from 'angular2/core';
-import {Store} from './../src/redux-decorators';
+import {Store} from 'redux-decorators';
 
 @Component({
     selector: 'counter',
@@ -186,3 +178,15 @@ equivalent.
 
 1. IReducer
 2. IStore
+
+# Motivation
+The main motivation behind this project was to learn more about TypeScript, Angular 2 and Redux while improving the syntax for implementing Redux in Angular 2 applications.
+
+# Disclaimer
+My experience of Angular 2, Redux and TypeScript is limited.  This project has
+been used as a learning experience.  With this in mind, any corrections in terms
+of terminology, best practices, oversights, etc. would be greatly received.
+
+# License
+
+MIT

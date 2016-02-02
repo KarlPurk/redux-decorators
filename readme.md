@@ -74,9 +74,6 @@ module - that's all we need to do.
 The `@InitialState` decorator is used for setting the initial state of the
 application store.
 
-**NOTE:** Future versions *may* implement convenience methods for setting initial
-state values when declaring state properties with `@Store()` or `@State()`;
-
 ### @Reducer()
 The `Reducer()` decorator is used to identify a root reducer, however it can also
 be used as a convenience method for setting multiple action reducers in a single call.  
@@ -115,16 +112,6 @@ Alternatively we can mark multiple methods at once using `@Reducer()`:
 class MyReducers {
     add(state): { return { count: state.count + 1; } }
     remove(state): { return { count: state.count - 1; } }
-}
-```
-
-**NOT CURRENTLY IMPLEMENTED:** If we need to, we can also map action types to method names:
-
-```
-@Reducer({add: 'addReducer'}, {remove: 'removeReducer'})
-class MyReducers {
-    addReducer(state): { return { count: state.count + 1; } }
-    removeReducer(state): { return { count: state.count - 1; } }
 }
 ```
 

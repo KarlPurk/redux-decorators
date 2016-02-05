@@ -4,7 +4,9 @@ A ridiculously good syntax for working with Redux and TypeScript.  Currently lim
 
 # Installation
 
-`TBC`
+```
+npm i redux-decorators
+```
 
 # Example Usage (Angular 2)
 
@@ -167,6 +169,13 @@ equivalent.
 
 1. IReducer
 2. IStore
+
+# TODO
+
+1. Example project (separate repo)
+2. TypeScript definition file
+3. Unit tests
+4. Review/improve TypeScript usage
 
 # Disclaimer
 

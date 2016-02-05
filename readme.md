@@ -2,7 +2,7 @@
 
 A ridiculously good syntax for working with Redux and TypeScript.  Currently limited to Angular 2 but could potentially be used elsewhere.
 
-[Try a live example on plunkr](http://plnkr.co/edit/mhZNwlkrpo7k4rzEQaOr?p=preview)
+<a href="http://plnkr.co/edit/mhZNwlkrpo7k4rzEQaOr?p=preview" target="_blank">Try a live example on plunkr</a>
 
 # Installation
 

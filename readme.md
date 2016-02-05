@@ -2,6 +2,8 @@
 
 A ridiculously good syntax for working with Redux and TypeScript.  Currently limited to Angular 2 but could potentially be used elsewhere.
 
+[Try a live example on plunkr](http://plnkr.co/edit/mhZNwlkrpo7k4rzEQaOr?p=preview)
+
 # Installation
 
 ```
@@ -23,8 +25,8 @@ export class AppReducer {
     remove(state) { return { count: state.count - 1 }; }
 }
 ```
-In the above example we're creating a new class that will hold our action
-reducers.  We're then registering two action reducers with the `@Reducer('add', 'remove')` decorator.  Anytime a `'add'` or `'reduce'` action is dispatched the
+In the above example we create a new class that will hold our action
+reducers.  We then register two action reducers with the `@Reducer('add', 'remove')` decorator.  Anytime an `add` or `reduce` action is dispatched the
 corresponding method will be called on the `AppReducer` class, allowing the
 method to update the state for that particular action.
 
@@ -46,13 +48,13 @@ import {Store} from 'redux-decorators';
 export class CounterComponent {}
 ```
 
-In the above example we've used the `@Store('count')` decorator to register the
-`CounterComponent` as a store observer.  We've also registered the `count` property
+In the above example we used the `@Store('count')` decorator to register the
+`CounterComponent` as a store observer.  We also registered the `count` property
 with the store which means that any changes to the `count` property in the application
 state will be automatically pushed through to the `count` property of this
 component.
 
-Notice also the `dispatch()` method in the template.  This is delegate method is
+Notice also the `dispatch()` method in the template.  This is method is
  provided by the `@Store()` decorator and can be used to easily dispatch an action.  
 
 **boot.ts**
@@ -64,7 +66,7 @@ import './app.reducer';
 bootstrap(AppComponent);
 ```
 
-In the above example we've imported the `app.reducer` as a side-effect only
+In the above example we imported the `app.reducer` as a side-effect only
 module - that's all we need to do.
 
 # API
@@ -172,10 +174,9 @@ equivalent.
 
 # TODO
 
-1. Example project (separate repo)
-2. TypeScript definition file
-3. Unit tests
-4. Review/improve TypeScript usage
+1. TypeScript definition file
+2. Unit tests
+3. Review/improve TypeScript usage
 
 # Disclaimer
 

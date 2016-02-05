@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (state === void 0) { state = reducerInitialState; }
 	        var actionReducers = reducers.filter(function (r) { return r.type === action.type; });
 	        if (actionReducers.length) {
-	            return actionReducers.reduce(function (s, r) { return Object.assign(s, r.method(s)); }, state);
+	            return actionReducers.reduce(function (s, r) { return Object.assign(s, r.method.apply(r, [s].concat(action.data))); }, state);
 	        }
 	        return state;
 	    };

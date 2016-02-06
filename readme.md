@@ -26,7 +26,7 @@ export class AppReducer {
 }
 ```
 In the above example we create a new class that will hold our action
-reducers.  We then register two action reducers with the `@Reducer('add', 'remove')` decorator.  Anytime an `add` or `reduce` action is dispatched the
+reducers.  We then register two action reducers with the `@Reducer('add', 'remove')` decorator.  Anytime an `add` or `remove` action is dispatched the
 corresponding method will be called on the `AppReducer` class, allowing the
 method to update the state for that particular action.
 
@@ -55,7 +55,7 @@ state will be automatically pushed through to the `count` property of this
 component.
 
 Notice also the `dispatch()` method in the template.  This is method is
- provided by the `@Store()` decorator and can be used to easily dispatch an action.  
+ provided by the `@Store()` decorator and can be used to easily dispatch an action.
 
 **boot.ts**
 ```js
@@ -81,7 +81,7 @@ application store.
 ### @Reducer()
 
 The `Reducer()` decorator is used to identify a root reducer, however it can also
-be used as a convenience method for setting multiple action reducers in a single call.  
+be used as a convenience method for setting multiple action reducers in a single call.
 
 The `@Reducer()` decorator registers a new root reducer if the class you are
 decorating contains a reducer method.
@@ -101,7 +101,7 @@ this means that this `class` will be registered as the root reducer - this will
 overwrite the default root reducer and prevent action reducers from working out
 of the box.
 
-**Action Reducers**  
+**Action Reducers**
 We can mark individual methods as action reducers.
 ```js
 class MyReducers {
@@ -133,9 +133,9 @@ class TodoListComponent {
 }
 ```
 
-You'll also need to declare which properties are updated by the application store.  
+You'll also need to declare which properties are updated by the application store.
 You can do that by explicitly decorating each property with the `@State()` decorator,
-or you can declare these properties when you declare the `@Store()` decorator:  
+or you can declare these properties when you declare the `@Store()` decorator:
 
 ```js
 @Store('todos')

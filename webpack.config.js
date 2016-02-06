@@ -65,7 +65,7 @@ var config = {
 };
 
 var testingDecorator = function(config) {
-    config.entry = './test/reducer.spec.ts';
+    config.entry = './test/reducer.decorator.spec.ts';
     config.target = 'node';
     config.output = {};
     config.output.filename = './dist/redux-decorators.spec.js';

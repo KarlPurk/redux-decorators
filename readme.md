@@ -178,12 +178,6 @@ equivalent.
 2. Unit tests
 3. Review/improve TypeScript usage
 
-# Disclaimer
-
-My experience of Angular 2, Redux and TypeScript is limited.  This project has
-been used as a learning experience.  With this in mind, any corrections in terms
-of terminology, best practices, oversights, etc. would be greatly received.
-
 # License
 
 MIT

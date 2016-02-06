@@ -1,7 +1,9 @@
 {
   "name": "redux-decorators",
   "version": "0.1.2",
-  "scripts": {},
+  "scripts": {
+    "test": "webpack > /dev/null && mocha dist/redux-decorators.spec.js && rm dist/redux-decorators.spec.*"
+  },
   "license": "MIT",
   "dependencies": {
     "es6-shim": "^0.33.3",
@@ -10,7 +12,8 @@
     "webpack": "^1.12.12"
   },
   "devDependencies": {
-    "typescript": "^1.7.5"
+    "typescript": "^1.7.5",
+    "yargs": "^3.32.0"
   },
   "description": "A ridiculously good syntax for working with Redux and TypeScript.  Currently limited to Angular 2 but could potentially be used elsewhere.",
   "main": "src/redux-decorators.js",

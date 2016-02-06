@@ -19,6 +19,7 @@ export interface IReducer {
     reducer(state, action);
 }
 
+// @Test export
 export class DefaultReducer implements IReducer {
     reducer(state = reducerInitialState, action) {
         let actionReducers = reducers.filter((r) => r.type === action.type);
@@ -29,6 +30,7 @@ export class DefaultReducer implements IReducer {
     }
 }
 
+// @Test export
 export let addReducer = function(type, fn) {
     reducers.push({
         type: type,

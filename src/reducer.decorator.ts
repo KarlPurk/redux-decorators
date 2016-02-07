@@ -6,6 +6,11 @@ export function setInitialState(initialState) {
     reducerInitialState = initialState;
 }
 
+// @Test
+export function getActionReducers() {
+    return reducers;
+}
+
 export function getReducer() {
     return reducer || DefaultReducer.prototype.reducer;
 }
@@ -14,7 +19,8 @@ export interface IReducer {
     reducer(state, action);
 }
 
-class DefaultReducer implements IReducer {
+// @Test export
+export class DefaultReducer implements IReducer {
     reducer(state = reducerInitialState, action) {
         let actionReducers = reducers.filter((r) => r.type === action.type);
         if (actionReducers.length) {
@@ -24,12 +30,18 @@ class DefaultReducer implements IReducer {
     }
 }
 
-let handleActionReducer = function(target, methods) {
+// @Test export
+export let addReducer = function(type, fn) {
     reducers.push({
-        type: methods[0],
-        method: target[methods[0]]
+        type: type,
+        method: fn
     });
 }
+
+let handleActionReducer = function(target, methods) {
+    addReducer(methods[0], target[methods[0]]);
+}
+
 let handleRootReducer = function(target, methods) {
     if (target.prototype.reducer) {
         reducer = target.prototype.reducer;

@@ -1,5 +1,6 @@
 var webpack = require('webpack');
-
+var yargs = require('yargs').argv;
+var testing = yargs.env === 'test';
 
 //------------------------------------------------------------------------------
 // https://github.com/webpack/webpack/issues/839#issuecomment-177219660
@@ -34,7 +35,7 @@ function getExternals() {
 }
 //------------------------------------------------------------------------------
 
-module.exports = {
+var config = {
     entry: './src/redux-decorators.ts',
     resolve: {
         extensions: ['', '.ts', '.js']
@@ -62,3 +63,18 @@ module.exports = {
     // Turn on sourcemaps
     devtool: 'source-map'
 };
+
+var testingDecorator = function(config) {
+    var path = require('path');
+    config.entry = path.resolve('./test/all-tests.ts');
+    config.target = 'node';
+    config.output = {};
+    config.output.filename = './dist/redux-decorators.spec.js';
+    return config;
+};
+
+if (testing) {
+    config = testingDecorator(config);
+}
+
+module.exports = config;

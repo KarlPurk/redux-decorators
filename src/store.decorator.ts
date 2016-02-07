@@ -24,10 +24,15 @@ export interface IStore {
     dispatch(action);
 }
 
-export function Store(...properties) {
-    var stateProperties = Array.prototype.slice.call(arguments);
+// @Test export
+export function updateComponentProperties(component, state, properties = 'stateProperties') {
+    component[properties].forEach(prop => {
+        component[prop] = state[prop];
+    });
+}
+
+export function Store(...stateProperties) {
     return function(target) {
-        console.log('@Store: ', target);
         var existingNgOnInit = target.prototype.ngOnInit;
         var existingNgOnDestroy = target.prototype.ngOnDestroy;
         if (target.prototype.stateProperties === undefined) {
@@ -36,10 +41,7 @@ export function Store(...properties) {
         target.prototype.stateProperties = target.prototype.stateProperties.concat(stateProperties);
         target.prototype.ngOnInit = function() {
             let storeUpdateHandler = () => {
-                let state = this.appStore.getState( );
-                this.stateProperties.forEach((prop) => {
-                    this[prop] = state[prop];
-                });
+                updateComponentProperties(this, this.appStore.getState())
             };
             getStore().then((appStore) => {
                 this.appStore = appStore;

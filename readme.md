@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/KarlPurk/redux-decorators.png)](https://travis-ci.org/KarlPurk/redux-decorators)
+
 # Redux Decorators
 
 A ridiculously good syntax for working with Redux and TypeScript.  Currently limited to Angular 2 but could potentially be used elsewhere.

@@ -80,10 +80,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    reducerInitialState = initialState;
 	}
 	exports.setInitialState = setInitialState;
+	// @Test
+	function getActionReducers() {
+	    return reducers;
+	}
+	exports.getActionReducers = getActionReducers;
 	function getReducer() {
 	    return reducer || DefaultReducer.prototype.reducer;
 	}
 	exports.getReducer = getReducer;
+	// @Test export
 	var DefaultReducer = (function () {
 	    function DefaultReducer() {
 	    }
@@ -97,11 +103,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	    return DefaultReducer;
 	})();
-	var handleActionReducer = function (target, methods) {
+	exports.DefaultReducer = DefaultReducer;
+	// @Test export
+	exports.addReducer = function (type, fn) {
 	    reducers.push({
-	        type: methods[0],
-	        method: target[methods[0]]
+	        type: type,
+	        method: fn
 	    });
+	};
+	var handleActionReducer = function (target, methods) {
+	    exports.addReducer(methods[0], target[methods[0]]);
 	};
 	var handleRootReducer = function (target, methods) {
 	    if (target.prototype.reducer) {
@@ -169,14 +180,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return appStore;
 	}
 	exports.getStore = getStore;
+	// @Test export
+	function updateComponentProperties(component, state, properties) {
+	    if (properties === void 0) { properties = 'stateProperties'; }
+	    component[properties].forEach(function (prop) {
+	        component[prop] = state[prop];
+	    });
+	}
+	exports.updateComponentProperties = updateComponentProperties;
 	function Store() {
-	    var properties = [];
+	    var stateProperties = [];
 	    for (var _i = 0; _i < arguments.length; _i++) {
-	        properties[_i - 0] = arguments[_i];
+	        stateProperties[_i - 0] = arguments[_i];
 	    }
-	    var stateProperties = Array.prototype.slice.call(arguments);
 	    return function (target) {
-	        console.log('@Store: ', target);
 	        var existingNgOnInit = target.prototype.ngOnInit;
 	        var existingNgOnDestroy = target.prototype.ngOnDestroy;
 	        if (target.prototype.stateProperties === undefined) {
@@ -186,10 +203,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        target.prototype.ngOnInit = function () {
 	            var _this = this;
 	            var storeUpdateHandler = function () {
-	                var state = _this.appStore.getState();
-	                _this.stateProperties.forEach(function (prop) {
-	                    _this[prop] = state[prop];
-	                });
+	                updateComponentProperties(_this, _this.appStore.getState());
 	            };
 	            getStore().then(function (appStore) {
 	                _this.appStore = appStore;

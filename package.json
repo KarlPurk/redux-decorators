@@ -12,6 +12,8 @@
     "webpack": "^1.12.12"
   },
   "devDependencies": {
+    "mocha": "^2.4.5",
+    "must": "^0.13.1",
     "typescript": "^1.7.5",
     "yargs": "^3.32.0"
   },

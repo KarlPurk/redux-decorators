@@ -73,52 +73,70 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports) {
 
-	var reducer;
-	var reducerInitialState = {};
-	var reducers = [];
-	function setInitialState(initialState) {
-	    reducerInitialState = initialState;
+	var rootReducer;
+	var initialState = {};
+	var actionReducers = [];
+	//------------------------------------------------------------------------------
+	// Initial state
+	//------------------------------------------------------------------------------
+	function setInitialState(state) {
+	    initialState = state;
 	}
 	exports.setInitialState = setInitialState;
-	// @Test
-	function getActionReducers() {
-	    return reducers;
+	//------------------------------------------------------------------------------
+	// Root reducer
+	//------------------------------------------------------------------------------
+	function setReducer(reducer) {
+	    rootReducer = reducer;
 	}
-	exports.getActionReducers = getActionReducers;
+	exports.setReducer = setReducer;
 	function getReducer() {
-	    return reducer || DefaultReducer.prototype.reducer;
+	    return rootReducer || DefaultReducer.prototype.reducer;
 	}
 	exports.getReducer = getReducer;
-	// @Test export
 	var DefaultReducer = (function () {
 	    function DefaultReducer() {
 	    }
 	    DefaultReducer.prototype.reducer = function (state, action) {
-	        if (state === void 0) { state = reducerInitialState; }
-	        var actionReducers = reducers.filter(function (r) { return r.type === action.type; });
-	        if (actionReducers.length) {
-	            return actionReducers.reduce(function (s, r) { return Object.assign(s, r.method.apply(r, [s].concat(action.data))); }, state);
+	        if (state === void 0) { state = initialState; }
+	        var filteredActionReducers = actionReducers.filter(function (r) { return r.type === action.type; });
+	        if (filteredActionReducers.length) {
+	            return filteredActionReducers.reduce(function (s, r) { return Object.assign(s, r.method.apply(r, [s].concat(action.data))); }, state);
 	        }
 	        return state;
 	    };
 	    return DefaultReducer;
 	})();
 	exports.DefaultReducer = DefaultReducer;
-	// @Test export
-	exports.addReducer = function (type, fn) {
-	    reducers.push({
+	//------------------------------------------------------------------------------
+	// Action reducers
+	//------------------------------------------------------------------------------
+	function addActionReducer(type, fn) {
+	    actionReducers.push({
 	        type: type,
 	        method: fn
 	    });
-	};
-	var handleActionReducer = function (target, methods) {
-	    exports.addReducer(methods[0], target[methods[0]]);
+	}
+	exports.addActionReducer = addActionReducer;
+	function getActionReducers() {
+	    return actionReducers;
+	}
+	exports.getActionReducers = getActionReducers;
+	function removeActionReducers() {
+	    actionReducers = [];
+	}
+	exports.removeActionReducers = removeActionReducers;
+	//------------------------------------------------------------------------------
+	// Decorator
+	//------------------------------------------------------------------------------
+	var handleActionReducer = function (target, method) {
+	    addActionReducer(method, target[method]);
 	};
 	var handleRootReducer = function (target, methods) {
 	    if (target.prototype.reducer) {
-	        reducer = target.prototype.reducer;
+	        rootReducer = target.prototype.reducer;
 	    }
-	    reducers = reducers.concat(methods.map(function (m) {
+	    actionReducers = actionReducers.concat(methods.map(function (m) {
 	        return {
 	            type: m,
 	            method: target.prototype[m]
@@ -130,9 +148,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    for (var _i = 0; _i < arguments.length; _i++) {
 	        methods[_i - 0] = arguments[_i];
 	    }
-	    return function (target) {
+	    return function (target, method) {
 	        if (!target.prototype) {
-	            handleActionReducer(target, methods);
+	            handleActionReducer(target, method);
 	            return;
 	        }
 	        handleRootReducer(target, methods);

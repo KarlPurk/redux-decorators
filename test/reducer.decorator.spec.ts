@@ -1,7 +1,7 @@
 import 'es6-shim';
 import {sinon} from './sinon';
 import {expect} from './must';
-import {Reducer, DefaultReducer, addReducer, removeReducers, getActionReducers} from '../src/reducer.decorator';
+import {Reducer, DefaultReducer, setReducer, addReducer, removeReducers, getActionReducers} from '../src/reducer.decorator';
 import {getStore} from '../src/store.decorator';
 
 describe('@Reducer', function() {
@@ -35,6 +35,7 @@ describe('@Reducer', function() {
                 store.dispatch('action', 1, 2, 3);
                 expect(spy.calledWithExactly('action', [1, 2, 3]))
             });
+            setReducer(null);
 
         });
 

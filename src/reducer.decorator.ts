@@ -6,6 +6,10 @@ export function setInitialState(initialState) {
     reducerInitialState = initialState;
 }
 
+export function setReducer(newReducer) {
+    reducer = newReducer;
+}
+
 // @Test
 export function getActionReducers() {
     return reducers;

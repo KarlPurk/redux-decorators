@@ -1,22 +1,22 @@
-let reducer;
-let reducerInitialState = {};
-let reducers = [];
+let rootReducer;
+let initialState = {};
+let actionReducers = [];
 
-export function setInitialState(initialState) {
-    reducerInitialState = initialState;
+export function setInitialState(state) {
+    initialState = state;
 }
 
-export function setReducer(newReducer) {
-    reducer = newReducer;
+export function setReducer(reducer) {
+    rootReducer = reducer;
 }
 
 // @Test
 export function getActionReducers() {
-    return reducers;
+    return actionReducers;
 }
 
 export function getReducer() {
-    return reducer || DefaultReducer.prototype.reducer;
+    return rootReducer || DefaultReducer.prototype.reducer;
 }
 
 export interface IReducer {
@@ -25,35 +25,35 @@ export interface IReducer {
 
 // @Test export
 export class DefaultReducer implements IReducer {
-    reducer(state = reducerInitialState, action) {
-        let actionReducers = reducers.filter((r) => r.type === action.type);
-        if (actionReducers.length) {
-            return actionReducers.reduce((s, r) => Object.assign(s, r.method(s, ...action.data)),  state);
+    reducer(state = initialState, action) {
+        let filteredActionReducers = actionReducers.filter((r) => r.type === action.type);
+        if (filteredActionReducers.length) {
+            return filteredActionReducers.reduce((s, r) => Object.assign(s, r.method(s, ...action.data)),  state);
         }
         return state;
     }
 }
 
-export function addReducer(type, fn) {
-    reducers.push({
+export function addActionReducer(type, fn) {
+    actionReducers.push({
         type: type,
         method: fn
     });
 }
 
 export function removeReducers() {
-    reducers = [];
+    actionReducers = [];
 }
 
 let handleActionReducer = function(target, method) {
-    addReducer(method, target[method]);
+    addActionReducer(method, target[method]);
 }
 
 let handleRootReducer = function(target, methods) {
     if (target.prototype.reducer) {
-        reducer = target.prototype.reducer;
+        rootReducer = target.prototype.reducer;
     }
-    reducers = reducers.concat(methods.map((m) => { return {
+    actionReducers = actionReducers.concat(methods.map((m) => { return {
         type: m,
         method: target.prototype[m]
     }}));

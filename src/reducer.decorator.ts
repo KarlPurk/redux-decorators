@@ -41,7 +41,7 @@ export function addActionReducer(type, fn) {
     });
 }
 
-export function removeReducers() {
+export function removeActionReducers() {
     actionReducers = [];
 }
 

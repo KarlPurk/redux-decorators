@@ -1,13 +1,13 @@
 import 'es6-shim';
 import {sinon} from './sinon';
 import {expect} from './must';
-import {Reducer, DefaultReducer, setReducer, addActionReducer, removeReducers, getActionReducers} from '../src/reducer.decorator';
+import {Reducer, DefaultReducer, setReducer, addActionReducer, removeActionReducers, getActionReducers} from '../src/reducer.decorator';
 import {getStore} from '../src/store.decorator';
 
 describe('@Reducer', function() {
 
     afterEach(function () {
-        removeReducers();
+        removeActionReducers();
     })
 
     describe('DefaultReducer', function() {

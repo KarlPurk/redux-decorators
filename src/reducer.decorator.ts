@@ -2,17 +2,20 @@ let rootReducer;
 let initialState = {};
 let actionReducers = [];
 
+//------------------------------------------------------------------------------
+// Initial state
+//------------------------------------------------------------------------------
+
 export function setInitialState(state) {
     initialState = state;
 }
 
+//------------------------------------------------------------------------------
+// Root reducer
+//------------------------------------------------------------------------------
+
 export function setReducer(reducer) {
     rootReducer = reducer;
-}
-
-// @Test
-export function getActionReducers() {
-    return actionReducers;
 }
 
 export function getReducer() {
@@ -23,7 +26,6 @@ export interface IReducer {
     reducer(state, action);
 }
 
-// @Test export
 export class DefaultReducer implements IReducer {
     reducer(state = initialState, action) {
         let filteredActionReducers = actionReducers.filter((r) => r.type === action.type);
@@ -34,6 +36,10 @@ export class DefaultReducer implements IReducer {
     }
 }
 
+//------------------------------------------------------------------------------
+// Action reducers
+//------------------------------------------------------------------------------
+
 export function addActionReducer(type, fn) {
     actionReducers.push({
         type: type,
@@ -41,9 +47,17 @@ export function addActionReducer(type, fn) {
     });
 }
 
+export function getActionReducers() {
+    return actionReducers;
+}
+
 export function removeActionReducers() {
     actionReducers = [];
 }
+
+//------------------------------------------------------------------------------
+// Decorator
+//------------------------------------------------------------------------------
 
 let handleActionReducer = function(target, method) {
     addActionReducer(method, target[method]);

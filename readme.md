@@ -103,7 +103,7 @@ this means that this `class` will be registered as the root reducer - this will
 overwrite the default root reducer and prevent action reducers from working out
 of the box.
 
-**Action Reducers**
+**Action Reducers**  
 We can mark individual methods as action reducers.
 ```js
 class MyReducers {

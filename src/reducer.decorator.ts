@@ -37,8 +37,8 @@ export function addReducer(type, fn) {
     });
 }
 
-export function removeReducer(type, fn) {
-    reducers.splice(reducers.findIndex(reducer => reducer.type === type && reducer.fn === fn), 1);
+export function removeReducers() {
+    reducers = [];
 }
 
 let handleActionReducer = function(target, method) {

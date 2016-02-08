@@ -1,26 +1,27 @@
 import 'es6-shim';
 import {sinon} from './sinon';
 import {expect} from './must';
-import {Reducer, DefaultReducer, addReducer, removeReducer, getActionReducers} from '../src/reducer.decorator';
+import {Reducer, DefaultReducer, addReducer, removeReducers, getActionReducers} from '../src/reducer.decorator';
 import {getStore} from '../src/store.decorator';
 
 describe('@Reducer', function() {
 
+    afterEach(function () {
+        removeReducers();
+    })
+
     describe('DefaultReducer', function() {
-        let state = {}, values = [1, 'test'], type = 'add';
-        let actionReducer = { add: () => {} };
 
         it('must pass data through to reducer methods', function() {
+            let state = {}, values = [1, 'test'], type = 'add';
+            let actionReducer = { add: () => {} };
             let defaultReducer = new DefaultReducer();
             let spy = sinon.spy(actionReducer, 'add');
             addReducer(type, actionReducer.add);
             defaultReducer.reducer(state, {type: type, data: values});
             expect(spy.calledWithExactly(state, values[0], values[1])).to.be.true();
         })
-        
-        afterEach(function () {
-            removeReducer(type, actionReducer.add);
-        })
+
     });
 
     describe('root reducer', function() {
@@ -45,7 +46,7 @@ describe('@Reducer', function() {
 
             @Reducer('one', 'two', 'three')
             class ActionReducers { one() {} two() {} three() {} }
-            let [one, two, three] = getActionReducers().splice(-3);
+            let [one, two, three] = getActionReducers();
 
             expect(one).property('type', 'one');
             expect(one).property('method', ActionReducers.prototype.one);
@@ -69,7 +70,7 @@ describe('@Reducer', function() {
                 @Reducer() two() {}
                 three() {}
             }
-            let [one, two, three] = getActionReducers().splice(-3);
+            let [one, two, three] = getActionReducers();
 
             expect(one).property('type', 'one');
             expect(one).property('method', ActionReducers.prototype.one);

@@ -107,8 +107,8 @@ of the box.
 We can mark individual methods as action reducers.
 ```js
 class MyReducers {
-    @Reducer('add') add(state): { return { count: state.count + 1; } }
-    @Reducer('remove') remove(state): { return { count: state.count - 1; } }
+    @Reducer() add(state): { return { count: state.count + 1; } }
+    @Reducer() remove(state): { return { count: state.count - 1; } }
 }
 ```
 

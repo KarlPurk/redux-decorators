@@ -30,16 +30,19 @@ export class DefaultReducer implements IReducer {
     }
 }
 
-// @Test export
-export let addReducer = function(type, fn) {
+export function addReducer(type, fn) {
     reducers.push({
         type: type,
         method: fn
     });
 }
 
-let handleActionReducer = function(target, methods) {
-    addReducer(methods[0], target[methods[0]]);
+export function removeReducer(type, fn) {
+    reducers.splice(reducers.findIndex(reducer => reducer.type === type && reducer.fn === fn), 1);
+}
+
+let handleActionReducer = function(target, method) {
+    addReducer(method, target[method]);
 }
 
 let handleRootReducer = function(target, methods) {
@@ -53,9 +56,9 @@ let handleRootReducer = function(target, methods) {
 }
 
 export function Reducer(...methods) {
-    return function(target) {
+    return function(target, method) {
         if (!target.prototype) {
-            handleActionReducer(target, methods);
+            handleActionReducer(target, method);
             return;
         }
         handleRootReducer(target, methods);

@@ -1,23 +1,26 @@
 import 'es6-shim';
 import {sinon} from './sinon';
 import {expect} from './must';
-import {Reducer, DefaultReducer, addReducer, getActionReducers} from '../src/reducer.decorator';
+import {Reducer, DefaultReducer, addReducer, removeReducer, getActionReducers} from '../src/reducer.decorator';
 import {getStore} from '../src/store.decorator';
 
 describe('@Reducer', function() {
 
     describe('DefaultReducer', function() {
+        let state = {}, values = [1, 'test'], type = 'add';
+        let actionReducer = { add: () => {} };
 
         it('must pass data through to reducer methods', function() {
-            let actionReducer = { add: () => {} };
             let defaultReducer = new DefaultReducer();
             let spy = sinon.spy(actionReducer, 'add');
-            let state = {}, values = [1, 'test'], type = 'add';
             addReducer(type, actionReducer.add);
             defaultReducer.reducer(state, {type: type, data: values});
             expect(spy.calledWithExactly(state, values[0], values[1])).to.be.true();
         })
-
+        
+        afterEach(function () {
+            removeReducer(type, actionReducer.add);
+        })
     });
 
     describe('root reducer', function() {
@@ -36,7 +39,7 @@ describe('@Reducer', function() {
 
     });
 
-    describe('action reducers', function() {
+    describe('action reducers (class)', function() {
 
         it('must allow multiple action reducers to be registered with @Reducer', function() {
 
@@ -52,6 +55,29 @@ describe('@Reducer', function() {
 
             expect(three).property('type', 'three');
             expect(three).property('method', ActionReducers.prototype.three);
+
+        });
+
+    })
+
+    describe('action reducers (function)', function() {
+
+        it('must allow multiple action reducers to be registered with @Reducer', function() {
+
+            class ActionReducers {
+                @Reducer() one() {}
+                @Reducer() two() {}
+                three() {}
+            }
+            let [one, two, three] = getActionReducers().splice(-3);
+
+            expect(one).property('type', 'one');
+            expect(one).property('method', ActionReducers.prototype.one);
+
+            expect(two).property('type', 'two');
+            expect(two).property('method', ActionReducers.prototype.two);
+
+            expect(three).be.undefined();
 
         });
 

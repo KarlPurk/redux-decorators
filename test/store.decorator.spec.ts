@@ -22,6 +22,9 @@ describe('@Store', function() {
         @Store('one', 'two', 'three')
         class StoreComponent {}
         updateComponentProperties(StoreComponent.prototype, state)
+        expect(StoreComponent.prototype.one).to.equal(state.one);
+        expect(StoreComponent.prototype.two).to.equal(state.two);
+        expect(StoreComponent.prototype.three).to.equal(state.three);
 
     });
 

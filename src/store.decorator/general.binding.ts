@@ -14,9 +14,9 @@ export function getStore() {
     return appStore;
 }
 
-export function updateComponentProperties(component, state, properties = 'stateProperties') {
-    component[properties].forEach(prop => {
-        component[prop] = state[prop];
+export function updateStateProperties(target, state, properties = 'stateProperties') {
+    target[properties].forEach(prop => {
+        target[prop] = state[prop];
     });
 }
 
@@ -35,7 +35,7 @@ export function generalBinding(target, stateProperties) {
 
     // Add a generic store update handler
     target.prototype.storeUpdateHandler = function() {
-        updateComponentProperties(this, this.appStore.getState());
+        updateStateProperties(this, this.appStore.getState());
     };
 
     // Add a generic storeInit method

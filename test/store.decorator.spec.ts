@@ -1,8 +1,8 @@
 import 'es6-shim';
 import {sinon} from './sinon';
 import {expect} from './must';
-import {getStore, createStore, , Store} from '../src/store.decorator';
-import {updateComponentProperties} from '../src/store.decorator/general.binding';
+import {getStore, createStore, Store} from '../src/store.decorator';
+import {updateStateProperties} from '../src/store.decorator/general.binding';
 import {setInitialState} from '../src/reducer.decorator';
 
 describe('@Store', function() {
@@ -22,7 +22,7 @@ describe('@Store', function() {
         let state = {one: 1, two: 2, three: 3};
         @Store('one', 'two', 'three')
         class StoreComponent {}
-        updateComponentProperties(StoreComponent.prototype, state)
+        updateStateProperties(StoreComponent.prototype, state)
         expect(StoreComponent.prototype.one).to.equal(state.one);
         expect(StoreComponent.prototype.two).to.equal(state.two);
         expect(StoreComponent.prototype.three).to.equal(state.three);

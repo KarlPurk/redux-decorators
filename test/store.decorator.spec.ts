@@ -1,7 +1,8 @@
 import 'es6-shim';
 import {sinon} from './sinon';
 import {expect} from './must';
-import {getStore, createStore, updateComponentProperties, Store} from '../src/store.decorator';
+import {getStore, createStore, , Store} from '../src/store.decorator';
+import {updateComponentProperties} from '../src/store.decorator/general.binding';
 import {setInitialState} from '../src/reducer.decorator';
 
 describe('@Store', function() {

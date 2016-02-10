@@ -1,5 +1,3 @@
-import {createStore} from 'redux';
-import {getReducer} from './reducer.decorator';
 import {getStore, generalBinding} from './store.decorator/general.binding';
 import {angular2Binding} from './store.decorator/angular2.binding';
 export {getStore};

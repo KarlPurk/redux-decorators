@@ -1,3 +1,7 @@
+
+import {createStore} from 'redux';
+import {getReducer} from './../reducer.decorator';
+
 let appStore;
 
 export function getStore() {
@@ -42,7 +46,7 @@ export function generalBinding(target, stateProperties) {
     target.prototype.storeInit = function() {
         getStore().then((store) => {
             this.appStore = store;
-            this.unsubscribe = this.appStore.subscribe(this.storeUpdateHandler);
+            this.unsubscribe = this.appStore.subscribe(this.storeUpdateHandler.bind(this));
             // Apply the default state to all listeners
             this.storeUpdateHandler();
         });

@@ -75,12 +75,20 @@ module - that's all we need to do.
 
 ## Decorators
 
-### @InitialState()
+### @InitialState(state)
 
 The `@InitialState` decorator is used for setting the initial state of the
 application store.
 
-### @Reducer()
+This decorator accepts a single object `state` that describes the initial state of the application.
+
+```js
+@InitialState({
+    count: 0
+})
+```
+
+### @Reducer([actionReducer1, actionReducer2, ...])
 
 The `Reducer()` decorator is used to identify a root reducer, however it can also
 be used as a convenience method for setting multiple action reducers in a single call.
@@ -122,7 +130,7 @@ class MyReducers {
 }
 ```
 
-### @Store()
+### @Store([stateProp1, stateProp2, ...])
 
 The `@Store()` decorator is used to identify a store component.  A store component
 is automatically subscribed to the application store and receives registered
@@ -168,11 +176,6 @@ In the above example we are declaring that the `todos` property of the
 `TodoListComponent` should be automatically updated whenever the application
 store's `todos` property is changed.  Please also refer to the `@Store()`
 equivalent.
-
-## Interfaces
-
-1. IReducer
-2. IStore
 
 # TODO
 

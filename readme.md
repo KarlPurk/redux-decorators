@@ -50,13 +50,13 @@ import {Store} from 'redux-decorators';
 export class CounterComponent {}
 ```
 
-In the above example we used the `@Store('count')` decorator to register the
+In the above example we used the `@Store()` decorator to register the
 `CounterComponent` as a store observer.  We also registered the `count` property
 with the store which means that any changes to the `count` property in the application
 state will be automatically pushed through to the `count` property of this
 component.
 
-Notice also the `dispatch()` method in the template.  This is method is
+Notice also the `dispatch()` method in the template.  This method is
  provided by the `@Store()` decorator and can be used to easily dispatch an action.
 
 **boot.ts**

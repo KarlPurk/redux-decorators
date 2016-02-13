@@ -64,6 +64,7 @@ describe('generalBinding', function() {
             let instance = new output();
             let store = {subscribe(){}};
             sinon.spy(store, 'subscribe');
+            // Don't know why spy doesn't work...
             // sinon.spy(instance, 'storeUpdateHandler');
             sinon.stub(instance, 'storeUpdateHandler');
             instance.setStore(store);

@@ -1,4 +1,3 @@
-
 import {createStore} from 'redux';
 import {getReducer} from './../reducer.decorator';
 
@@ -44,8 +43,7 @@ export function generalBinding(target, stateProperties) {
 
     // Add a generic storeInit method
     target.prototype.storeInit = function() {
-        getStore().then((store) => {
-            this.appStore = store;
+        return this.getStore().then(() => {
             this.unsubscribe = this.appStore.subscribe(this.storeUpdateHandler.bind(this));
             // Apply the default state to all listeners
             this.storeUpdateHandler();
@@ -55,6 +53,19 @@ export function generalBinding(target, stateProperties) {
     // Add a generic storeDestroy method
     target.prototype.storeDestroy = function() {
         this.unsubscribe();
+    };
+
+    // Add a get store method
+    target.prototype.getStore = function() {
+        if (this.appStore) {
+            return this.appStore.then ? this.appStore : Promise.resolve(this.appStore);
+        }
+        return getStore().then(store => this.appStore = store);
+    };
+
+    // Add a set store method for testing purposes
+    target.prototype.setStore = function(store) {
+        this.appStore = store;
     };
 
     return target;

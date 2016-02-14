@@ -3,10 +3,11 @@ export function angular2Binding(target) {
     const existingNgOnDestroy = target.prototype.ngOnDestroy;
     target.prototype.ngOnInit = function() {
         this.storeInit();
-        !existingNgOnInit || existingNgOnInit();
+        !existingNgOnInit || existingNgOnInit.call(this);
     }
     target.prototype.ngOnDestroy = function() {
         this.storeDestroy();
-        !existingNgOnDestroy || existingNgOnDestroy();
+        !existingNgOnDestroy || existingNgOnDestroy.call(this);
     }
+    return target;
 }

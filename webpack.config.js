@@ -45,23 +45,17 @@ var config = {
             { test: /\.ts$/, loader: 'ts-loader' }
         ]
     },
-    "compilerOptions": {
-        "module": "commonjs",
-        "sourceMap": true
-      },
+    compilerOptions: {
+        module: 'commonjs',
+        sourceMap: true
+    },
     output: {
         filename: './dist/redux-decorators.js',
         library: 'ReduxDecorators',
         libraryTarget: 'umd'
     },
-    externals: getExternals(),
-    plugins: [
-        new webpack.ProvidePlugin({
-            // 'redux': 'Redux'
-        })
-    ],
-    // Turn on sourcemaps
-    devtool: 'source-map'
+    devtool: 'source-map',
+    externals: getExternals()
 };
 
 var testingDecorator = function(config) {

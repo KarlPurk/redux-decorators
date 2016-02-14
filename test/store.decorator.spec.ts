@@ -1,5 +1,4 @@
 import 'es6-shim';
-import {sinon} from './sinon';
 import {expect} from './must';
 import {getStore, createStore, Store} from '../src/store.decorator';
 import {updateStateProperties} from '../src/store.decorator/general.binding';

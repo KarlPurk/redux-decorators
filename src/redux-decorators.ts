@@ -1,8 +1,8 @@
 /// <reference path="../typings/tsd.d.ts" />
 
-import {Reducer, setInitialState, IReducer, getReducer} from './reducer.decorator';
+import {Reducer, IReducer} from './reducer.decorator';
 import {State} from './state.decorator';
-import {IStore, Store, getStore} from './store.decorator';
+import {IStore, Store} from './store.decorator';
 import {InitialState} from './initial-state.decorator';
 
 // reducer decorator module exports

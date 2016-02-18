@@ -1,5 +1,5 @@
 declare module ReduxDecorators {
-    interface IReducer {
+    interface RootReducer {
         reduce(state: any, action: any);
     }
     function InitialState(state: any): Function;

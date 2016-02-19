@@ -50,13 +50,13 @@ describe('@Reducer', function() {
             let [one, two, three] = getActionReducers();
 
             expect(one).property('type', 'one');
-            expect(one).property('method', ActionReducers.prototype.one);
+            expect(one).property('fn', ActionReducers.prototype.one);
 
             expect(two).property('type', 'two');
-            expect(two).property('method', ActionReducers.prototype.two);
+            expect(two).property('fn', ActionReducers.prototype.two);
 
             expect(three).property('type', 'three');
-            expect(three).property('method', ActionReducers.prototype.three);
+            expect(three).property('fn', ActionReducers.prototype.three);
 
         });
 
@@ -74,10 +74,10 @@ describe('@Reducer', function() {
             let [one, two, three] = getActionReducers();
 
             expect(one).property('type', 'one');
-            expect(one).property('method', ActionReducers.prototype.one);
+            expect(one).property('fn', ActionReducers.prototype.one);
 
             expect(two).property('type', 'two');
-            expect(two).property('method', ActionReducers.prototype.two);
+            expect(two).property('fn', ActionReducers.prototype.two);
 
             expect(three).be.undefined();
 

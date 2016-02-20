@@ -8,7 +8,7 @@ let actionReducers: any[] = [];
 // Initial state
 //------------------------------------------------------------------------------
 
-export function setInitialState(state: any) {
+export function setInitialState(state: any): any {
     initialState = state;
 }
 
@@ -16,7 +16,7 @@ export function setInitialState(state: any) {
 // Root reducer
 //------------------------------------------------------------------------------
 
-export function setReducer(reducer: Reducer) {
+export function setReducer(reducer: Reducer): void {
     rootReducer = reducer;
 }
 
@@ -26,11 +26,11 @@ export function getReducer(): Reducer {
 
 export interface RootReducer {
     prototype?: any;// I shouldn't need this
-    reducer(state: any, action: any);
+    reducer(state: any, action: any): any;
 }
 
 export class DefaultReducer implements RootReducer {
-    reducer(state: any = initialState, action: any) {
+    reducer(state: any = initialState, action: any): any {
 
         let matchingActionTypeOnly = (actionReducer) => {
             return actionReducer.type === action.type;
@@ -59,7 +59,7 @@ export class DefaultReducer implements RootReducer {
 // Action reducers
 //------------------------------------------------------------------------------
 
-export function addActionReducer(type: string, fn: (state: any) => {}) {
+export function addActionReducer(type: string, fn: (state: any) => {}): void {
     actionReducers.push({type, fn});
 }
 
@@ -75,11 +75,11 @@ export function removeActionReducers(): void {
 // Decorator
 //------------------------------------------------------------------------------
 
-let handleActionReducer = function(target: any, type: string) {
+let handleActionReducer = function(target: any, type: string): void {
     addActionReducer(type, target[type]);
 }
 
-let handleRootReducer = function(target: any, types: string[]):void {
+let handleRootReducer = function(target: any, types: string[]): void {
     if (target.prototype.reducer) {
         rootReducer = target.prototype.reducer;
     }
@@ -87,8 +87,8 @@ let handleRootReducer = function(target: any, types: string[]):void {
     actionReducers = actionReducers.concat(types.map(mapTypes));
 }
 
-export function Reducer(...types: string[]) {
-    return function(target: any, type?: string) {
+export function Reducer(...types: string[]): Function {
+    return function(target: any, type?: string): void {
         if (!target.prototype) {
             handleActionReducer(target, type);
             return;

@@ -1,4 +1,4 @@
-export function angular2Binding(target) {
+export function angular2Binding(target: any) {
     const existingNgOnInit = target.prototype.ngOnInit;
     const existingNgOnDestroy = target.prototype.ngOnDestroy;
     target.prototype.ngOnInit = function() {

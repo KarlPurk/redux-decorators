@@ -1,9 +1,9 @@
-import {createStore} from 'redux';
+import {createStore, Store} from 'redux';
 import {getReducer} from './../reducer.decorator';
 
 let appStore;
 
-export function getStore() {
+export function getStore(): Promise<Store>  {
     if (!appStore) {
         appStore = new Promise((resolve) => {
             var interval = setInterval(() => {
@@ -17,13 +17,13 @@ export function getStore() {
     return appStore;
 }
 
-export function updateStateProperties(target, state, properties = 'stateProperties') {
+export function updateStateProperties(target: any, state: any, properties: string = 'stateProperties'): void {
     target[properties].forEach(prop => {
         target[prop] = state[prop];
     });
 }
 
-export function generalBinding(target, stateProperties) {
+export function generalBinding(target: any, stateProperties: string[]): void {
 
     // Add stateProperties to the target
     if (target.prototype.stateProperties === undefined) {

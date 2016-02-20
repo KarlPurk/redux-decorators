@@ -1,12 +1,11 @@
 
-export function State() {
-    return function(target) {
-        console.log('@State: ', target);
+export function State(): Function {
+    return function(target: any, ...props: string[]): void {
         if (target.stateProperties === undefined) {
-                target.stateProperties = [];
+            target.stateProperties = [];
         }
-        var args = Array.prototype.slice.call(arguments);
-        args.shift();
-        target.stateProperties = target.stateProperties.concat(args);
+        if (props.length) {
+            target.stateProperties = target.stateProperties.concat(props);
+        }
     }
 }

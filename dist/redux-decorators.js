@@ -7,7 +7,7 @@
 		exports["ReduxDecorators"] = factory(require("redux"));
 	else
 		root["ReduxDecorators"] = factory(root["redux"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_4__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_5__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -54,19 +54,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/// <reference path="../typings/tsd.d.ts" />
 	var reducer_decorator_1 = __webpack_require__(1);
 	exports.Reducer = reducer_decorator_1.Reducer;
 	var state_decorator_1 = __webpack_require__(2);
 	exports.State = state_decorator_1.State;
 	var store_decorator_1 = __webpack_require__(3);
 	exports.Store = store_decorator_1.Store;
-	var initial_state_decorator_1 = __webpack_require__(5);
+	var initial_state_decorator_1 = __webpack_require__(7);
 	exports.InitialState = initial_state_decorator_1.InitialState;
-	// reducer decorator module exports
-	// state decorator module exports
-	// store decorator module exports
-	// initial-state decorator module exports
 
 
 /***/ },
@@ -76,16 +71,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var rootReducer;
 	var initialState = {};
 	var actionReducers = [];
-	//------------------------------------------------------------------------------
-	// Initial state
-	//------------------------------------------------------------------------------
 	function setInitialState(state) {
 	    initialState = state;
 	}
 	exports.setInitialState = setInitialState;
-	//------------------------------------------------------------------------------
-	// Root reducer
-	//------------------------------------------------------------------------------
 	function setReducer(reducer) {
 	    rootReducer = reducer;
 	}
@@ -99,23 +88,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    DefaultReducer.prototype.reducer = function (state, action) {
 	        if (state === void 0) { state = initialState; }
-	        var filteredActionReducers = actionReducers.filter(function (r) { return r.type === action.type; });
-	        if (filteredActionReducers.length) {
-	            return filteredActionReducers.reduce(function (s, r) { return Object.assign(s, r.method.apply(r, [s].concat(action.data))); }, state);
+	        var matchingActionTypeOnly = function (actionReducer) {
+	            return actionReducer.type === action.type;
+	        };
+	        var filteredActionReducers = actionReducers.filter(matchingActionTypeOnly);
+	        if (!filteredActionReducers.length) {
+	            return state;
 	        }
-	        return state;
+	        var mutateState = function (state, actionReducer) {
+	            var mutatedState = actionReducer.fn.apply(actionReducer, [state].concat(action.data));
+	            return Object.assign(state, mutatedState);
+	        };
+	        return filteredActionReducers.reduce(mutateState, state);
 	    };
 	    return DefaultReducer;
 	})();
 	exports.DefaultReducer = DefaultReducer;
-	//------------------------------------------------------------------------------
-	// Action reducers
-	//------------------------------------------------------------------------------
 	function addActionReducer(type, fn) {
-	    actionReducers.push({
-	        type: type,
-	        method: fn
-	    });
+	    actionReducers.push({ type: type, fn: fn });
 	}
 	exports.addActionReducer = addActionReducer;
 	function getActionReducers() {
@@ -126,34 +116,27 @@ return /******/ (function(modules) { // webpackBootstrap
 	    actionReducers = [];
 	}
 	exports.removeActionReducers = removeActionReducers;
-	//------------------------------------------------------------------------------
-	// Decorator
-	//------------------------------------------------------------------------------
-	var handleActionReducer = function (target, method) {
-	    addActionReducer(method, target[method]);
+	var handleActionReducer = function (target, type) {
+	    addActionReducer(type, target[type]);
 	};
-	var handleRootReducer = function (target, methods) {
+	var handleRootReducer = function (target, types) {
 	    if (target.prototype.reducer) {
 	        rootReducer = target.prototype.reducer;
 	    }
-	    actionReducers = actionReducers.concat(methods.map(function (m) {
-	        return {
-	            type: m,
-	            method: target.prototype[m]
-	        };
-	    }));
+	    var mapTypes = function (type) { return { type: type, fn: target.prototype[type] }; };
+	    actionReducers = actionReducers.concat(types.map(mapTypes));
 	};
 	function Reducer() {
-	    var methods = [];
+	    var types = [];
 	    for (var _i = 0; _i < arguments.length; _i++) {
-	        methods[_i - 0] = arguments[_i];
+	        types[_i - 0] = arguments[_i];
 	    }
-	    return function (target, method) {
+	    return function (target, type) {
 	        if (!target.prototype) {
-	            handleActionReducer(target, method);
+	            handleActionReducer(target, type);
 	            return;
 	        }
-	        handleRootReducer(target, methods);
+	        handleRootReducer(target, types);
 	    };
 	}
 	exports.Reducer = Reducer;
@@ -165,13 +148,16 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function State() {
 	    return function (target) {
-	        console.log('@State: ', target);
+	        var props = [];
+	        for (var _i = 1; _i < arguments.length; _i++) {
+	            props[_i - 1] = arguments[_i];
+	        }
 	        if (target.stateProperties === undefined) {
 	            target.stateProperties = [];
 	        }
-	        var args = Array.prototype.slice.call(arguments);
-	        args.shift();
-	        target.stateProperties = target.stateProperties.concat(args);
+	        if (props.length) {
+	            target.stateProperties = target.stateProperties.concat(props);
+	        }
 	    };
 	}
 	exports.State = State;
@@ -181,7 +167,26 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var redux_1 = __webpack_require__(4);
+	var general_binding_1 = __webpack_require__(4);
+	exports.getStore = general_binding_1.getStore;
+	var angular2_binding_1 = __webpack_require__(6);
+	function Store() {
+	    var stateProperties = [];
+	    for (var _i = 0; _i < arguments.length; _i++) {
+	        stateProperties[_i - 0] = arguments[_i];
+	    }
+	    return function (target) {
+	        angular2_binding_1.angular2Binding(general_binding_1.generalBinding(target, stateProperties));
+	    };
+	}
+	exports.Store = Store;
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var redux_1 = __webpack_require__(5);
 	var reducer_decorator_1 = __webpack_require__(1);
 	var appStore;
 	function getStore() {
@@ -198,69 +203,86 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return appStore;
 	}
 	exports.getStore = getStore;
-	// @Test export
-	function updateComponentProperties(component, state, properties) {
+	function updateStateProperties(target, state, properties) {
 	    if (properties === void 0) { properties = 'stateProperties'; }
-	    component[properties].forEach(function (prop) {
-	        component[prop] = state[prop];
+	    target[properties].forEach(function (prop) {
+	        target[prop] = state[prop];
 	    });
 	}
-	exports.updateComponentProperties = updateComponentProperties;
-	function Store() {
-	    var stateProperties = [];
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	        stateProperties[_i - 0] = arguments[_i];
+	exports.updateStateProperties = updateStateProperties;
+	function generalBinding(target, stateProperties) {
+	    if (target.prototype.stateProperties === undefined) {
+	        target.prototype.stateProperties = [];
 	    }
-	    return function (target) {
-	        var existingNgOnInit = target.prototype.ngOnInit;
-	        var existingNgOnDestroy = target.prototype.ngOnDestroy;
-	        if (target.prototype.stateProperties === undefined) {
-	            target.prototype.stateProperties = [];
+	    target.prototype.stateProperties = target.prototype.stateProperties.concat(stateProperties);
+	    target.prototype.dispatch = function (action) {
+	        var data = [];
+	        for (var _i = 1; _i < arguments.length; _i++) {
+	            data[_i - 1] = arguments[_i];
 	        }
-	        target.prototype.stateProperties = target.prototype.stateProperties.concat(stateProperties);
-	        target.prototype.ngOnInit = function () {
-	            var _this = this;
-	            var storeUpdateHandler = function () {
-	                updateComponentProperties(_this, _this.appStore.getState());
-	            };
-	            getStore().then(function (appStore) {
-	                _this.appStore = appStore;
-	                _this.unsubscribe = _this.appStore.subscribe(storeUpdateHandler);
-	                // Apply the default state to all listeners
-	                storeUpdateHandler();
-	            });
-	            !existingNgOnInit || existingNgOnInit();
-	        };
-	        target.prototype.dispatch = function (action) {
-	            var data = [];
-	            for (var _i = 1; _i < arguments.length; _i++) {
-	                data[_i - 1] = arguments[_i];
-	            }
-	            this.appStore.dispatch({ type: action, data: data });
-	        };
-	        target.prototype.ngOnDestroy = function () {
-	            this.unsubscribe();
-	            !existingNgOnDestroy || existingNgOnDestroy();
-	        };
+	        this.appStore.dispatch({ type: action, data: data });
 	    };
+	    target.prototype.storeUpdateHandler = function () {
+	        updateStateProperties(this, this.appStore.getState());
+	    };
+	    target.prototype.storeInit = function () {
+	        var _this = this;
+	        return this.getStore().then(function () {
+	            _this.unsubscribe = _this.appStore.subscribe(_this.storeUpdateHandler.bind(_this));
+	            _this.storeUpdateHandler();
+	        });
+	    };
+	    target.prototype.storeDestroy = function () {
+	        this.unsubscribe();
+	    };
+	    target.prototype.getStore = function () {
+	        var _this = this;
+	        if (this.appStore) {
+	            return this.appStore.then ? this.appStore : Promise.resolve(this.appStore);
+	        }
+	        return getStore().then(function (store) { return _this.appStore = store; });
+	    };
+	    target.prototype.setStore = function (store) {
+	        this.appStore = store;
+	    };
+	    return target;
 	}
-	exports.Store = Store;
+	exports.generalBinding = generalBinding;
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux");
 
 /***/ },
-/* 5 */
+/* 6 */
+/***/ function(module, exports) {
+
+	function angular2Binding(target) {
+	    var existingNgOnInit = target.prototype.ngOnInit;
+	    var existingNgOnDestroy = target.prototype.ngOnDestroy;
+	    target.prototype.ngOnInit = function () {
+	        this.storeInit();
+	        !existingNgOnInit || existingNgOnInit.call(this);
+	    };
+	    target.prototype.ngOnDestroy = function () {
+	        this.storeDestroy();
+	        !existingNgOnDestroy || existingNgOnDestroy.call(this);
+	    };
+	    return target;
+	}
+	exports.angular2Binding = angular2Binding;
+
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var reducer_decorator_1 = __webpack_require__(1);
 	function InitialState(initialState) {
 	    reducer_decorator_1.setInitialState(initialState);
-	    console.log('@InitialState: ', initialState);
 	    return function (target) { };
 	}
 	exports.InitialState = InitialState;

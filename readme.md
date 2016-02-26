@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/KarlPurk/redux-decorators.png)](https://travis-ci.org/KarlPurk/redux-decorators)
+[![Build Status](https://travis-ci.org/KarlPurk/redux-decorators.svg)](https://travis-ci.org/KarlPurk/redux-decorators)
 
 # Redux Decorators
 

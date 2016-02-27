@@ -177,12 +177,6 @@ In the above example we are declaring that the `todos` property of the
 store's `todos` property is changed.  Please also refer to the `@Store()`
 equivalent.
 
-# TODO
-
-1. TypeScript definition file
-2. Unit tests
-3. Review/improve TypeScript usage
-
 # License
 
 MIT

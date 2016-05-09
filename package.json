@@ -8,15 +8,15 @@
   "license": "MIT",
   "dependencies": {
     "es6-shim": "^0.33.3",
-    "redux": "^3.2.1",
-    "ts-loader": "^0.8.0",
-    "webpack": "^1.12.12"
+    "redux": "^3.2.1"
   },
   "devDependencies": {
     "mocha": "^2.4.5",
     "must": "^0.13.1",
     "sinon": "^1.17.3",
     "typescript": "^1.7.5",
+    "ts-loader": "^0.8.0",
+    "webpack": "^1.12.12",
     "yargs": "^3.32.0"
   },
   "description": "A ridiculously good syntax for working with Redux and TypeScript.  Currently limited to Angular 2 but could potentially be used elsewhere.",

@@ -17,7 +17,7 @@ describe('@Reducer', function() {
             let actionReducer = { add: () => {} };
             let defaultReducer = new DefaultReducer();
             let spy = sinon.spy(actionReducer, 'add');
-            addActionReducer(type, actionReducer.add);
+            addActionReducer(type, actionReducer, 'add');
             defaultReducer.reducer(state, {type: type, data: values});
             expect(spy.calledWithExactly(state, values[0], values[1])).to.be.true();
         })
@@ -50,13 +50,16 @@ describe('@Reducer', function() {
             let [one, two, three] = getActionReducers();
 
             expect(one).property('type', 'one');
-            expect(one).property('fn', ActionReducers.prototype.one);
+            expect(one).property('owner', ActionReducers.prototype);
+            expect(one).property('methodName', 'one');
 
             expect(two).property('type', 'two');
-            expect(two).property('fn', ActionReducers.prototype.two);
+            expect(two).property('owner', ActionReducers.prototype);
+            expect(two).property('methodName', 'two');
 
             expect(three).property('type', 'three');
-            expect(three).property('fn', ActionReducers.prototype.three);
+            expect(three).property('owner', ActionReducers.prototype);
+            expect(three).property('methodName', 'three');
 
         });
 
@@ -74,10 +77,12 @@ describe('@Reducer', function() {
             let [one, two, three] = getActionReducers();
 
             expect(one).property('type', 'one');
-            expect(one).property('fn', ActionReducers.prototype.one);
+            expect(one).property('owner', ActionReducers.prototype);
+            expect(one).property('methodName', 'one');
 
             expect(two).property('type', 'two');
-            expect(two).property('fn', ActionReducers.prototype.two);
+            expect(two).property('owner', ActionReducers.prototype);
+            expect(two).property('methodName', 'two');
 
             expect(three).be.undefined();
 

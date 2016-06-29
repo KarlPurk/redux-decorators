@@ -25,6 +25,7 @@
         "initial-state.decorator.ts",
         "reducer.decorator.ts",
         "redux-decorators.ts",
+        "slice.decorator.ts",
         "state.decorator.ts",
         "store.decorator.ts",
         "store.decorator/angular2.binding.ts",

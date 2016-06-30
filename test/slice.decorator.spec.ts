@@ -7,7 +7,7 @@ describe('@Slice', function() {
     it('must add slice information to a class', function() {
         @Slice('class-slice')
         class Component {}
-        expect(Component.prototype.stateSliceAffected.all).to.equal('class-slice');
+        expect(Component.prototype.stateSliceAffected.default).to.equal('class-slice');
     });
 
     it('must add slice information to a method', function() {
@@ -27,9 +27,9 @@ describe('@Slice', function() {
             method2() {}
         }
         const instance = new Component();
-        expect(Component.prototype.stateSliceAffected.all).to.equal('class-slice');
+        expect(Component.prototype.stateSliceAffected.default).to.equal('class-slice');
         expect(instance.stateSliceAffected.method1).to.equal('method-slice');
-        expect(instance.stateSliceAffected.all).to.equal('class-slice');
+        expect(instance.stateSliceAffected.default).to.equal('class-slice');
     });
 
 });

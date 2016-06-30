@@ -44,14 +44,7 @@ export class DefaultReducer implements RootReducer {
         let createNextState = (state, {owner, methodName}) => {
             const reducer = owner[methodName];
             let slice, nextState;
-            if (owner.stateSliceAffected) {
-                if (owner.stateSliceAffected[methodName]) {
-                    slice = owner.stateSliceAffected[methodName];
-                }
-                else if (owner.stateSliceAffected.all) {
-                    slice = owner.stateSliceAffected.all;
-                }
-            }
+            slice = owner.getSlice ? owner.getSlice(methodName) : null;
             if (slice) {
                 const inputState = state.hasOwnProperty(slice) ? state[slice] : undefined;
                 nextState = state;
@@ -73,7 +66,7 @@ export class DefaultReducer implements RootReducer {
 
 interface ActionReducer {
     type: string;
-    owner: Function;
+    owner: any;
     methodName: string;
 }
 

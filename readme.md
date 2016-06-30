@@ -75,26 +75,74 @@ module - that's all we need to do.
 
 ## Decorators
 
-### @InitialState(state)
+### @InitialState(state: any)
 
-The `@InitialState` decorator is used for setting the initial state of the
-application store.
-
-This decorator accepts a single object `state` that describes the initial state of the application.
+The `@InitialState` decorator is used to set the initial state of a slice in the state tree.
 
 ```js
-@InitialState({
-    count: 0
-})
+@Slice('count')
+@InitialState(0)
+@Reducer('increment')
+class MyActionReducers {
+  increment(count) { return count + 1; } // Initial state is 0 for the count slice
+}
 ```
+
+In the above example the `count` slice of the state tree will be initialized to `0`.  When the `add` reducer is called it will be passed a value of `0`.
+
+This is different to a default value because the default value only takes affect when the reducer is called.  
+
+@InitialState can be used with classes and methods.  You can set an initial state on a class and overwrite the state for individual methods:
+
+```jS
+@Slice('count')
+@InitialState(0)
+@Reducer('increment', 'addItem')
+class MyActionReducers {
+  increment(count) { return count + 1; } // Initial state is 0 for the count slice
+
+  @Slice('items')
+  @InitialState([])
+  addItem(items) { return [...items, item]; } // Initial state is [] for the items slice
+}
+```
+
+It's unlikely that you'll do this, but it's good to understand how this works.  
+
+**Note:** You will be using the `@InitialState` together with the `@Slice` decorator.  It doesn't really make sense to use these decorators apart, which means that we'll likely provide a way to specify these together in a single decorator in the future.
+
+### @Slice(slice: string)
+
+The `@Slice` decorator is used to specify what slice of the state tree action reducers receive.  This allows your action reducers to be passed the data for the slice that they manipulate.
+
+```js
+@Slice('count')
+@Reducer('increment')
+class MyActionReducers {
+  increment(count) { return count + 1; } // increment is passed the value of the count slice
+}
+```
+
+`@Slice` can be used with classes and methods.  Which means a single class of action reducers can work against multiple slices of the state tree.  However, we would advise against this approach.  Action reducer classes should operate on a single slice of the state tree.
+
+```jS
+@Slice('count')
+@Reducer('increment', 'addItem')
+class MyActionReducers {
+  increment(count) { return count + 1; } // Initial state is 0 for the count slice
+
+  @Slice('items')
+  addItem(items) { return [...items, item]; } // Initial state is [] for the items slice
+}
+```
+
+In the above example we have used the `@Slice` decorator to specify that the `addItems` reducer should receive the value of the `items` slice from the state tree.
 
 ### @Reducer([actionReducer1, actionReducer2, ...])
 
-The `Reducer()` decorator is used to identify a root reducer, however it can also
-be used as a convenience method for setting multiple action reducers in a single call.
+The `Reducer()` decorator is used to identify a root reducer, however it can also be used as a convenience method for setting multiple action reducers in a single call.
 
-The `@Reducer()` decorator registers a new root reducer if the class you are
-decorating contains a reducer method.
+The `@Reducer()` decorator registers a new root reducer if the class you are decorating contains a reducer method.
 
 **Root Reducer**
 ```js
@@ -106,10 +154,7 @@ class MyRootReducer implements IReducer {
 }
 ```
 
-In the above example, the `MyRootReducer` class contains a `reducer` method,
-this means that this `class` will be registered as the root reducer - this will
-overwrite the default root reducer and prevent action reducers from working out
-of the box.
+In the above example, the `MyRootReducer` class contains a `reducer` method, this means that this `class` will be registered as the root reducer - this will overwrite the default root reducer and prevent action reducers from working out of the box.
 
 **Action Reducers**  
 We can mark individual methods as action reducers.
@@ -132,9 +177,7 @@ class MyReducers {
 
 ### @Store([stateProp1, stateProp2, ...])
 
-The `@Store()` decorator is used to identify a store component.  A store component
-is automatically subscribed to the application store and receives registered
-state updates when the store is updated.
+The `@Store()` decorator is used to identify a store component.  A store component is automatically subscribed to the application store and receives registered state updates when the store is updated.
 
 ```js
 @Store()
@@ -143,9 +186,7 @@ class TodoListComponent {
 }
 ```
 
-You'll also need to declare which properties are updated by the application store.
-You can do that by explicitly decorating each property with the `@State()` decorator,
-or you can declare these properties when you declare the `@Store()` decorator:
+You'll also need to declare which properties are updated by the application store. You can do that by explicitly decorating each property with the `@State()` decorator, or you can declare these properties when you declare the `@Store()` decorator:
 
 ```js
 @Store('todos')
@@ -155,14 +196,11 @@ class TodoListComponent {
 ```
 
 In the above example we are declaring that the `todos` property of the
-`TodoListComponent` should be automatically updated whenever the application
-store's `todos` property is changed.
+`TodoListComponent` should be automatically updated whenever the application store's `todos` property is changed.
 
 ### @State()
 
-The `@State()` decorator is used to identify a state property in the application
- store.  Identifying state properties allow the property to be automatically
- updated when the application store's property changes.
+The `@State()` decorator is used to identify a state property in the application store.  Identifying state properties allow the property to be automatically updated when the application store's property changes.
 
 ```js
 @Store()
@@ -173,9 +211,7 @@ class TodoListComponent {
 ```
 
 In the above example we are declaring that the `todos` property of the
-`TodoListComponent` should be automatically updated whenever the application
-store's `todos` property is changed.  Please also refer to the `@Store()`
-equivalent.
+`TodoListComponent` should be automatically updated whenever the application store's `todos` property is changed.  Please also refer to the `@Store()` equivalent.
 
 # License
 

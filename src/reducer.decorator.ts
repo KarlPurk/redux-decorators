@@ -4,14 +4,6 @@ let rootReducer: Reducer;
 let initialState: any = {};
 
 //------------------------------------------------------------------------------
-// Initial state
-//------------------------------------------------------------------------------
-
-export function setInitialState(state: any): any {
-    initialState = state;
-}
-
-//------------------------------------------------------------------------------
 // Root reducer
 //------------------------------------------------------------------------------
 
@@ -34,6 +26,20 @@ export class DefaultReducer implements RootReducer {
         let matchingActionTypeOnly = (actionReducer) => {
             return actionReducer.type === action.type;
         };
+
+        if (action.type === '@@redux/INIT') {
+            return actionReducers.reduce((nextState, reducer) => {
+                if (!reducer.owner.getInitialState) {
+                    return state;
+                }
+                const initialState = reducer.owner.getInitialState(reducer.type);
+                const slice = reducer.owner.getSlice ? reducer.owner.getSlice(reducer.methodName) : null;
+                if (initialState !== undefined && slice) {
+                    nextState[slice] = initialState;
+                }
+                return nextState;
+            }, initialState);
+        }
 
         let filteredActionReducers = actionReducers.filter(matchingActionTypeOnly);
 

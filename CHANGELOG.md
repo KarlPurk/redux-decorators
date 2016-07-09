@@ -11,7 +11,6 @@
 
 # 0.2.0
 
-- Cleaned up docs
 - Added reducer decorator tests
 - Added store decorator tests
 

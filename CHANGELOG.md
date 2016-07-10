@@ -1,3 +1,11 @@
+# 0.4.0
+
+- Refactored @Reducer decorator
+- Added new @Slice decorator
+- **Breaking Change:** Removed @InitialState decorator
+- Fix sourcemaps for dist builds
+- Cleaned up devDependencies
+
 # 0.3.0
 
 - Fixed bug with subscription handler context

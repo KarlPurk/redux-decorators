@@ -4,7 +4,7 @@
 
 A ridiculously good syntax for working with Redux using decorators in ES7 / TypeScript.  Currently limited to Angular 2 but could potentially be used elsewhere.
 
-<a href="http://plnkr.co/edit/mhZNwlkrpo7k4rzEQaOr?p=preview" target="_blank">Try a live example on plunkr</a>
+<a href="http://plnkr.co/edit/sYlFceUPD8j123vmAfdc?p=preview" target="_blank">Try a live example on plunkr</a>
 
 # Installation
 
@@ -84,7 +84,7 @@ class MyActionReducers {
 
 In the above example we use the `@Slice` decorator to specify that the `MyActionReducers` class operates on the `count` slice of the state tree.  We also used the second argument to specify that `count` should be initialised with a default value of `0`.
 
-**Advanced Usages**  
+**Advanced Usage**  
 
 `@Slice` can be used with classes and methods.  This means a single class of action reducers can work against multiple slices of the state tree.  However, this approach is not advised.  Action reducer classes should operate on a single slice of the state tree.
 

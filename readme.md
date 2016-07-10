@@ -4,7 +4,7 @@
 
 A ridiculously good syntax for working with Redux using decorators in ES7 / TypeScript.  Currently limited to Angular 2 but could potentially be used elsewhere.
 
-<a href="http://plnkr.co/edit/sYlFceUPD8j123vmAfdc?p=preview" target="_blank">Try a live example on plunkr</a>
+<a href="http://plnkr.co/edit/1R31jl2qw0NbEz75ul9L?p=preview" target="_blank">Try a live example on plunkr</a>
 
 # Installation
 

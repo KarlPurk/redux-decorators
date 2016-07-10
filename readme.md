@@ -14,25 +14,25 @@ npm i redux-decorators
 
 # Example Usage (Angular 2)
 
-**app.reducer.ts**
+**app.reducer.ts**  
+
 ```js
 import {InitialState, Reducer} from 'redux-decorators';
 
-@InitialState({
-    count: 0
-})
+@Slice('count', 0)
 @Reducer('add', 'remove')
 export class AppReducer {
-    add(state) { return { count: state.count + 1 }; }
-    remove(state) { return { count: state.count - 1 }; }
+    add(count) { return count + 1; }
+    remove(count) { return count - 1; }
 }
 ```
-In the above example we create a new class that will hold our action
-reducers.  We then register two action reducers with the `@Reducer('add', 'remove')` decorator.  Anytime an `add` or `remove` action is dispatched the
-corresponding method will be called on the `AppReducer` class, allowing the
-method to update the state for that particular action.
 
-**count.component.ts**
+In the above example we create a new class that will hold our action reducers.  We use the `@Slice` decorator to specify which slice these action reducers receive.  We also specify `0` for the default value of `count`.  
+
+We then register two action reducers with the `@Reducer('add', 'remove')` decorator.  Anytime an `add` or `remove` action is dispatched the corresponding method will be called on the `AppReducer` class, allowing the method to update the state for that particular action.
+
+**count.component.ts**  
+
 ```js
 import {Component} from 'angular2/core';
 import {Store} from 'redux-decorators';
@@ -50,16 +50,12 @@ import {Store} from 'redux-decorators';
 export class CounterComponent {}
 ```
 
-In the above example we used the `@Store()` decorator to register the
-`CounterComponent` as a store observer.  We also registered the `count` property
-with the store which means that any changes to the `count` property in the application
-state will be automatically pushed through to the `count` property of this
-component.
+In the above example we used the `@Store()` decorator to register the `CounterComponent` as a store observer.  We also registered the `count` property with the store which means that any changes to the `count` property in the application state will be automatically pushed through to the `count` property of this component.
 
-Notice also the `dispatch()` method in the template.  This method is
- provided by the `@Store()` decorator and can be used to easily dispatch an action.
+Notice also the `dispatch()` method in the template.  This method is provided by the `@Store()` decorator and can be used to easily dispatch an action.
 
-**boot.ts**
+**boot.ts**  
+
 ```js
 import {bootstrap} from 'angular2/platform/browser';
 import {AppComponent} from './app.component';
@@ -68,65 +64,32 @@ import './app.reducer';
 bootstrap(AppComponent);
 ```
 
-In the above example we imported the `app.reducer` as a side-effect only
-module - that's all we need to do.
+In the above example we imported the `app.reducer` as a side-effect only module - that's all we need to do.
 
 # API
 
 ## Decorators
 
-### @InitialState(state: any)
+### @Slice(slice: string, initialState?: any)
 
-The `@InitialState` decorator is used to set the initial state of a slice in the state tree.
-
-```js
-@Slice('count')
-@InitialState(0)
-@Reducer('increment')
-class MyActionReducers {
-  increment(count) { return count + 1; } // Initial state is 0 for the count slice
-}
-```
-
-In the above example the `count` slice of the state tree will be initialized to `0`.  When the `add` reducer is called it will be passed a value of `0`.
-
-This is different to a default value because the default value only takes affect when the reducer is called.  
-
-@InitialState can be used with classes and methods.  You can set an initial state on a class and overwrite the state for individual methods:
-
-```jS
-@Slice('count')
-@InitialState(0)
-@Reducer('increment', 'addItem')
-class MyActionReducers {
-  increment(count) { return count + 1; } // Initial state is 0 for the count slice
-
-  @Slice('items')
-  @InitialState([])
-  addItem(items) { return [...items, item]; } // Initial state is [] for the items slice
-}
-```
-
-It's unlikely that you'll do this, but it's good to understand how this works.  
-
-**Note:** You will be using the `@InitialState` together with the `@Slice` decorator.  It doesn't really make sense to use these decorators apart, which means that we'll likely provide a way to specify these together in a single decorator in the future.
-
-### @Slice(slice: string)
-
-The `@Slice` decorator is used to specify what slice of the state tree action reducers receive.  This allows your action reducers to be passed the data for the slice that they manipulate.
+The `@Slice` decorator is used to specify what slice of the state tree action reducers receive.  This allows your action reducers to be passed the data for the slice that they manipulate.  The `@Slice` decorator can also be passed the default value for the specified state slice as the second argument.
 
 ```js
-@Slice('count')
+@Slice('count', 0)
 @Reducer('increment')
 class MyActionReducers {
   increment(count) { return count + 1; } // increment is passed the value of the count slice
 }
 ```
 
-`@Slice` can be used with classes and methods.  Which means a single class of action reducers can work against multiple slices of the state tree.  However, we would advise against this approach.  Action reducer classes should operate on a single slice of the state tree.
+In the above example we use the `@Slice` decorator to specify that the `MyActionReducers` class operates on the `count` slice of the state tree.  We also used the second argument to specify that `count` should be initialised with a default value of `0`.
 
-```jS
-@Slice('count')
+**Advanced Usages**  
+
+`@Slice` can be used with classes and methods.  This means a single class of action reducers can work against multiple slices of the state tree.  However, this approach is not advised.  Action reducer classes should operate on a single slice of the state tree.
+
+```js
+@Slice('count', 0)
 @Reducer('increment', 'addItem')
 class MyActionReducers {
   increment(count) { return count + 1; } // Initial state is 0 for the count slice
@@ -136,7 +99,7 @@ class MyActionReducers {
 }
 ```
 
-In the above example we have used the `@Slice` decorator to specify that the `addItems` reducer should receive the value of the `items` slice from the state tree.
+Above we have extended the previous example and used the `@Slice` decorator to specify that the `addItems` reducer should receive the value of the `items` slice from the state tree.  This is an example of a single class operating on multiple state slices.
 
 ### @Reducer([actionReducer1, actionReducer2, ...])
 

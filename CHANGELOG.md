@@ -1,3 +1,7 @@
+# 0.4.1 
+
+- Added @InitialState decorator, reverting the breaking change
+ 
 # 0.4.0 (BREAKING CHANGES)
 
 - Refactored @Reducer decorator

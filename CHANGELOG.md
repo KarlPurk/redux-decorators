@@ -1,7 +1,11 @@
-# 0.4.1 
+# 0.4.2
+
+- Fixed @Slice signature in ts.d file
+
+# 0.4.1
 
 - Added @InitialState decorator, reverting the breaking change
- 
+
 # 0.4.0 (BREAKING CHANGES)
 
 - Refactored @Reducer decorator
@@ -29,7 +33,7 @@
 # 0.1.2
 
 - Added plunkr example
-- Fixed bug with data not being passed to action reducers 
+- Fixed bug with data not being passed to action reducers
 
 # 0.1.1
 

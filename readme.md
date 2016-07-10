@@ -176,6 +176,19 @@ class TodoListComponent {
 In the above example we are declaring that the `todos` property of the
 `TodoListComponent` should be automatically updated whenever the application store's `todos` property is changed.  Please also refer to the `@Store()` equivalent.
 
+### @InitialState(state: any)
+
+The `@InitialState` decorator is used for setting the initial state of the
+application store.
+
+This decorator accepts a single object `state` that describes the initial state of the application.
+
+```js
+@InitialState({
+    count: 0
+})
+```
+
 # License
 
 MIT

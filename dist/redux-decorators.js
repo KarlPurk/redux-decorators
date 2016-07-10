@@ -78,6 +78,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	var rootReducer;
 	var initialState = {};
 	//------------------------------------------------------------------------------
+	// Initial state
+	//------------------------------------------------------------------------------
+	function setInitialState(state) {
+	    initialState = state;
+	}
+	exports.setInitialState = setInitialState;
+	//------------------------------------------------------------------------------
 	// Root reducer
 	//------------------------------------------------------------------------------
 	function setReducer(reducer) {
@@ -319,44 +326,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	var addGetInitialStateMethod = function (target) {
-	    if (target.getInitialState) {
-	        return;
-	    }
-	    target.getInitialState = function (actionType) {
-	        if (!target.initialState) {
-	            return undefined;
-	        }
-	        if (target.initialState.hasOwnProperty(actionType)) {
-	            return target.initialState[actionType];
-	        }
-	        if (target.initialState.hasOwnProperty('default')) {
-	            return target.initialState.default;
-	        }
-	        return undefined;
-	    };
-	};
-	var addInitialStateProperty = function (target) {
-	    if (target.hasOwnProperty('initialState')) {
-	        return;
-	    }
-	    target.initialState = {};
-	};
+	var reducer_decorator_1 = __webpack_require__(1);
 	function InitialState(initialState) {
-	    return function (target, methodName) {
-	        var isInstance = !target.prototype;
-	        if (isInstance) {
-	            addInitialStateProperty(target);
-	            addGetInitialStateMethod(target);
-	            target.initialState[methodName] = initialState;
-	            return;
-	        }
-	        addInitialStateProperty(target.prototype);
-	        addGetInitialStateMethod(target.prototype);
-	        target.prototype.initialState.default = initialState;
-	    };
+	    reducer_decorator_1.setInitialState(initialState);
+	    return function (target) { };
 	}
 	exports.InitialState = InitialState;
 
@@ -365,7 +340,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var initial_state_decorator_1 = __webpack_require__(7);
+	var slice_state_helper_1 = __webpack_require__(9);
 	var addGetSliceMethod = function (target) {
 	    if (target.getSlice) {
 	        return;
@@ -396,16 +371,54 @@ return /******/ (function(modules) { // webpackBootstrap
 	            addStateSliceAffectedProperty(target);
 	            addGetSliceMethod(target);
 	            target.stateSliceAffected[method] = slice;
-	            initial_state_decorator_1.InitialState(initialState)(target, method);
+	            slice_state_helper_1.setSliceState(initialState, target, method);
 	            return;
 	        }
 	        addStateSliceAffectedProperty(target.prototype);
 	        addGetSliceMethod(target.prototype);
 	        target.prototype.stateSliceAffected.default = slice;
-	        initial_state_decorator_1.InitialState(initialState)(target);
+	        slice_state_helper_1.setSliceState(initialState, target);
 	    };
 	}
 	exports.Slice = Slice;
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	var addGetInitialStateMethod = function (target) {
+	    if (target.getInitialState) {
+	        return;
+	    }
+	    target.getInitialState = function (actionType) {
+	        if (!target.initialState) {
+	            return undefined;
+	        }
+	        if (target.initialState.hasOwnProperty(actionType)) {
+	            return target.initialState[actionType];
+	        }
+	        if (target.initialState.hasOwnProperty('default')) {
+	            return target.initialState.default;
+	        }
+	        return undefined;
+	    };
+	};
+	var addInitialStateProperty = function (target) {
+	    if (target.hasOwnProperty('initialState')) {
+	        return;
+	    }
+	    target.initialState = {};
+	};
+	function setSliceState(initialState, target, methodName) {
+	    var isInstance = !target.prototype;
+	    var targetRef = isInstance ? target : target.prototype;
+	    addInitialStateProperty(targetRef);
+	    addGetInitialStateMethod(targetRef);
+	    methodName = methodName ? methodName : 'default';
+	    targetRef.initialState[methodName] = initialState;
+	}
+	exports.setSliceState = setSliceState;
 
 
 /***/ }

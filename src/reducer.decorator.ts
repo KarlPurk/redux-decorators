@@ -2,15 +2,6 @@ import {Reducer} from 'redux';
 
 let rootReducer: Reducer;
 let initialState: any = {};
-let actionReducers: any[] = [];
-
-//------------------------------------------------------------------------------
-// Initial state
-//------------------------------------------------------------------------------
-
-export function setInitialState(state: any): any {
-    initialState = state;
-}
 
 //------------------------------------------------------------------------------
 // Root reducer
@@ -36,22 +27,42 @@ export class DefaultReducer implements RootReducer {
             return actionReducer.type === action.type;
         };
 
-        // Filter reducers down to those that match action.type
+        if (action.type === '@@redux/INIT') {
+            return actionReducers.reduce((nextState, reducer) => {
+                if (!reducer.owner.getInitialState) {
+                    return state;
+                }
+                const initialState = reducer.owner.getInitialState(reducer.type);
+                const slice = reducer.owner.getSlice ? reducer.owner.getSlice(reducer.methodName) : null;
+                if (initialState !== undefined && slice) {
+                    nextState[slice] = initialState;
+                }
+                return nextState;
+            }, initialState);
+        }
+
         let filteredActionReducers = actionReducers.filter(matchingActionTypeOnly);
 
-        // If we don't have any action reducers return the unmutated state
         if (!filteredActionReducers.length) {
             return state;
         }
 
-        let mutateState = (state, actionReducer) => {
-            let mutatedState = actionReducer.fn(state, ...action.data);
-            return Object.assign(state, mutatedState);
+        let createNextState = (state, {owner, methodName}) => {
+            const reducer = owner[methodName];
+            let slice, nextState;
+            slice = owner.getSlice ? owner.getSlice(methodName) : null;
+            if (slice) {
+                const inputState = state.hasOwnProperty(slice) ? state[slice] : undefined;
+                nextState = state;
+                nextState[slice] = reducer(inputState, ...action.data);
+            }
+            else {
+                nextState = reducer(state, ...action.data);
+            }
+            return Object.assign(state, nextState);
         }
 
-        // Pass the state to each action reducer allowing each to mutate
-        // the state.
-        return filteredActionReducers.reduce(mutateState, state);
+        return filteredActionReducers.reduce(createNextState, state);
     }
 }
 
@@ -59,11 +70,19 @@ export class DefaultReducer implements RootReducer {
 // Action reducers
 //------------------------------------------------------------------------------
 
-export function addActionReducer(type: string, fn: (state: any) => {}): void {
-    actionReducers.push({type, fn});
+interface ActionReducer {
+    type: string;
+    owner: any;
+    methodName: string;
 }
 
-export function getActionReducers(): ((state: any) => {})[] {
+let actionReducers: ActionReducer[] = [];
+
+export function addActionReducer(type: string, owner: Function, methodName: string): void {
+    actionReducers.push({type, owner, methodName});
+}
+
+export function getActionReducers(): ActionReducer[] {
     return actionReducers;
 }
 
@@ -75,24 +94,24 @@ export function removeActionReducers(): void {
 // Decorator
 //------------------------------------------------------------------------------
 
-let handleActionReducer = function(target: any, type: string): void {
-    addActionReducer(type, target[type]);
+let handleActionReducer = function(owner: any, methodName: string): void {
+    addActionReducer(methodName, owner, methodName);
 }
 
-let handleRootReducer = function(target: any, types: string[]): void {
-    if (target.prototype.reducer) {
-        rootReducer = target.prototype.reducer;
+let handleRootReducer = function(owner: any, methodNames: string[]): void {
+    if (owner.prototype.reducer) {
+        rootReducer = owner.prototype.reducer;
     }
-    let mapTypes = (type) => { return { type, fn: target.prototype[type] } };
-    actionReducers = actionReducers.concat(types.map(mapTypes));
+    let mapMethodNames = (methodName) => { return { type: methodName, owner: owner.prototype, methodName } };
+    actionReducers = actionReducers.concat(methodNames.map(mapMethodNames));
 }
 
-export function Reducer(...types: string[]): Function {
-    return function(target: any, type?: string): void {
-        if (!target.prototype) {
-            handleActionReducer(target, type);
+export function Reducer(...methodNames: string[]): Function {
+    return function(owner: any, methodName?: string): void {
+        if (!owner.prototype) {
+            handleActionReducer(owner, methodName);
             return;
         }
-        handleRootReducer(target, types);
+        handleRootReducer(owner, methodNames);
     }
 }

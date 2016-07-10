@@ -1,4 +1,4 @@
-# 0.4.0
+# 0.4.0 (BREAKING CHANGES)
 
 - Refactored @Reducer decorator
 - Added new @Slice decorator

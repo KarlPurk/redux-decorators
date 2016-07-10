@@ -1,6 +1,6 @@
 {
   "name": "redux-decorators",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "scripts": {
     "build": "webpack",
     "test": "webpack --env=test > /dev/null && mocha dist/redux-decorators.spec.js"

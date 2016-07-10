@@ -23,17 +23,11 @@ const addInitialStateProperty = (target) => {
     target.initialState = {};
 };
 
-export function InitialState(initialState: any): Function {
-    return function(target: any, methodName?: string): void {
-        const isInstance = !target.prototype;
-        if (isInstance) {
-            addInitialStateProperty(target);
-            addGetInitialStateMethod(target);
-            target.initialState[methodName] = initialState;
-            return;
-        }
-        addInitialStateProperty(target.prototype);
-        addGetInitialStateMethod(target.prototype);
-        target.prototype.initialState.default = initialState;
-    }
+export function setSliceState(initialState: any, target: any, methodName?: string): void {
+    const isInstance = !target.prototype;
+    var targetRef = isInstance ? target : target.prototype;
+    addInitialStateProperty(targetRef);
+    addGetInitialStateMethod(targetRef);
+    methodName = methodName ? methodName : 'default';
+    targetRef.initialState[methodName] = initialState;
 }

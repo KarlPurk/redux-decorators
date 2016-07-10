@@ -1,4 +1,4 @@
-import {InitialState} from './initial-state.decorator';
+import { setSliceState } from './slice-state.helper';
 
 const addGetSliceMethod = (target) => {
     if (target.getSlice) {
@@ -32,12 +32,12 @@ export function Slice(slice: string, initialState?: any): Function {
             addStateSliceAffectedProperty(target);
             addGetSliceMethod(target);
             target.stateSliceAffected[method] = slice;
-            InitialState(initialState)(target, method);
+            setSliceState(initialState, target, method);
             return;
         }
         addStateSliceAffectedProperty(target.prototype);
         addGetSliceMethod(target.prototype);
         target.prototype.stateSliceAffected.default = slice;
-        InitialState(initialState)(target);
+        setSliceState(initialState, target);
     }
 }

@@ -1,3 +1,7 @@
+# 0.4.3
+
+- Fixed structure of d.ts file and renamed to index.d.ts
+
 # 0.4.2
 
 - Fixed @Slice signature in ts.d file

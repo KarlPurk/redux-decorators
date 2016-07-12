@@ -6,6 +6,12 @@ A ridiculously good syntax for working with Redux using decorators in ES7 / Type
 
 <a href="http://plnkr.co/edit/1R31jl2qw0NbEz75ul9L?p=preview" target="_blank">Try a live example on plunkr</a>
 
+# Demo Repositories
+
+Check out the following repositories for working examples:
+
+ - <a href="https://github.com/KarlPurk/redux-decorators-ng2-demo">Angular 2 demo</a>
+
 # Installation
 
 ```

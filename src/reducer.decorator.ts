@@ -1,6 +1,6 @@
 import {Reducer} from 'redux';
 
-let rootReducer: Reducer;
+let rootReducer: Reducer<any>;
 let initialState: any = {};
 
 //------------------------------------------------------------------------------
@@ -15,11 +15,11 @@ export function setInitialState(state: any): any {
 // Root reducer
 //------------------------------------------------------------------------------
 
-export function setReducer(reducer: Reducer): void {
+export function setReducer(reducer: Reducer<any>): void {
     rootReducer = reducer;
 }
 
-export function getReducer(): Reducer {
+export function getReducer(): Reducer<any> {
     return rootReducer || DefaultReducer.prototype.reducer;
 }
 
@@ -86,7 +86,7 @@ interface ActionReducer {
 
 let actionReducers: ActionReducer[] = [];
 
-export function addActionReducer(type: string, owner: Function, methodName: string): void {
+export function addActionReducer(type: string, owner: any, methodName: string): void {
     actionReducers.push({type, owner, methodName});
 }
 

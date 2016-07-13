@@ -1,5 +1,5 @@
 import 'es6-shim';
-import {sinon} from './../sinon';
+import {spy, stub} from 'sinon';
 import {expect} from './../must';
 import {generalBinding} from '../../src/store.decorator/general.binding';
 
@@ -8,7 +8,7 @@ describe('generalBinding', function() {
     describe('stateProperties', function() {
 
         it('must add state properties to the target', function() {
-            let target = function() {};
+            let target = class Target {};
             let props = ['one', 'two'];
             let output = generalBinding(target, props);
             expect(output.prototype.stateProperties).include('one');
@@ -21,7 +21,7 @@ describe('generalBinding', function() {
 
         it('must add a dispatch method to the target', function() {
             let target = function() {};
-            let output = generalBinding(target, {});
+            let output = generalBinding(target);
             expect(output.prototype.dispatch).a.function();
         });
 
@@ -31,7 +31,7 @@ describe('generalBinding', function() {
 
         it('must add a storeUpdateHandler method to the target', function() {
             let target = function() {};
-            let output = generalBinding(target, {});
+            let output = generalBinding(target);
             expect(output.prototype.storeUpdateHandler).to.be.function();
         });
 
@@ -39,7 +39,7 @@ describe('generalBinding', function() {
             let appStore = {getState(){}};
             let props = ['one', 'two'];
             let state = {one: 1, two: 2};
-            let stub = sinon.stub(appStore, 'getState').returns(state);
+            stub(appStore, 'getState').returns(state);
             let target = function() { this.appStore = appStore; };
             let output = generalBinding(target, ['one', 'two']);
             let instance = new output();
@@ -54,7 +54,7 @@ describe('generalBinding', function() {
 
         it('must add a storeInit method to the target', function() {
             let target = function() {};
-            let output = generalBinding(target, {});
+            let output = generalBinding(target);
             expect(output.prototype.storeInit).to.be.function();
         });
 
@@ -62,11 +62,11 @@ describe('generalBinding', function() {
             let target = function() {};
             let output = generalBinding(target);
             let instance = new output();
-            let store = {subscribe(){}};
-            sinon.spy(store, 'subscribe');
+            let store: any = {subscribe(){}};
+            spy(store, 'subscribe');
             // Don't know why spy doesn't work...
-            // sinon.spy(instance, 'storeUpdateHandler');
-            sinon.stub(instance, 'storeUpdateHandler');
+            // spy(instance, 'storeUpdateHandler');
+            stub(instance, 'storeUpdateHandler');
             instance.setStore(store);
             instance.storeInit().then(() => {
                 expect(store.subscribe.calledOnce).to.be.true();
@@ -80,10 +80,10 @@ describe('generalBinding', function() {
             let output = generalBinding(target);
             let instance = new output();
             let store = {subscribe(){}};
-            sinon.stub(store, 'subscribe').returns(function() {});
+            stub(store, 'subscribe').returns(function() {});
             // Don't know why spy doesn't work...
-            // sinon.spy(instance, 'storeUpdateHandler');
-            sinon.stub(instance, 'storeUpdateHandler');
+            // spy(instance, 'storeUpdateHandler');
+            stub(instance, 'storeUpdateHandler');
             instance.setStore(store);
             instance.storeInit().then(() => {
                 expect(instance.unsubscribe).to.be.function();
@@ -98,10 +98,10 @@ describe('generalBinding', function() {
             let output = generalBinding(target);
             let instance = new output();
             let store = {subscribe(){}};
-            sinon.spy(store, 'subscribe');
+            spy(store, 'subscribe');
             // Don't know why spy doesn't work...
-            // sinon.spy(instance, 'storeUpdateHandler');
-            sinon.stub(instance, 'storeUpdateHandler');
+            // spy(instance, 'storeUpdateHandler');
+            stub(instance, 'storeUpdateHandler');
             instance.setStore(store);
             instance.storeInit().then(() => {
                 expect(instance.storeUpdateHandler.calledOnce).to.be.true();
@@ -117,7 +117,7 @@ describe('generalBinding', function() {
 
         it('must add a storeDestroy method to the target', function() {
             let target = function() {};
-            let output = generalBinding(target, {});
+            let output = generalBinding(target);
             expect(output.prototype.storeDestroy).to.be.function();
         });
 
@@ -125,7 +125,7 @@ describe('generalBinding', function() {
             let target = function() { this.unsubscribe = () => {} };
             let output = generalBinding(target);
             let instance = new output();
-            sinon.spy(instance, 'unsubscribe');
+            spy(instance, 'unsubscribe');
             instance.storeDestroy();
             expect(instance.unsubscribe.calledOnce).to.be.true();
         });

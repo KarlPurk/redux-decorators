@@ -3,7 +3,7 @@ import {getReducer} from './../reducer.decorator';
 
 let appStore;
 
-export function getStore(): Promise<Store>  {
+export function getStore(): Promise<Store<any>>  {
     if (!appStore) {
         appStore = new Promise((resolve) => {
             var interval = setInterval(() => {
@@ -23,7 +23,7 @@ export function updateStateProperties(target: any, state: any, properties: strin
     });
 }
 
-export function generalBinding(target: any, stateProperties: string[]): void {
+export function generalBinding(target: any, stateProperties: string[] = []): any {
 
     // Add stateProperties to the target
     if (target.prototype.stateProperties === undefined) {

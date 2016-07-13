@@ -1,5 +1,5 @@
 import 'es6-shim';
-import {sinon} from './sinon';
+import {spy} from 'sinon';
 import {expect} from './must';
 import {Reducer, DefaultReducer, setReducer, addActionReducer, removeActionReducers, getActionReducers} from '../src/reducer.decorator';
 import {getStore} from '../src/store.decorator';
@@ -14,12 +14,11 @@ describe('@Reducer', function() {
 
         it('must pass data through to reducer methods', function() {
             let state = {}, values = [1, 'test'], type = 'add';
-            let actionReducer = { add: () => {} };
+            let fakeClass = { add: spy() };
             let defaultReducer = new DefaultReducer();
-            let spy = sinon.spy(actionReducer, 'add');
-            addActionReducer(type, actionReducer, 'add');
+            addActionReducer(type, fakeClass, 'add');
             defaultReducer.reducer(state, {type: type, data: values});
-            expect(spy.calledWithExactly(state, values[0], values[1])).to.be.true();
+            expect(fakeClass.add.calledWithExactly(state, values[0], values[1])).to.be.true();
         })
 
     });
@@ -30,10 +29,10 @@ describe('@Reducer', function() {
 
             @Reducer()
             class RootReducer { reducer(state, action) {} }
-            let spy = sinon.spy(RootReducer.prototype, 'reducer');
-            getStore().then(function(store) {
+            let spyRR = spy(RootReducer.prototype, 'reducer');
+            getStore().then(function(store: any) {
                 store.dispatch('action', 1, 2, 3);
-                expect(spy.calledWithExactly('action', [1, 2, 3]))
+                expect(spyRR.calledWithExactly('action', [1, 2, 3]))
             });
             setReducer(null);
 

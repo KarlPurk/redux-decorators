@@ -5,13 +5,14 @@ import { setSliceState } from '../src/slice-state.helper';
 describe('slice state helper', function() {
 
     it('must add initial state information to a class', function() {
-        class Component { }
+        class Component { initialState: any };
         setSliceState({count: 1}, Component);
         expect(Component.prototype.initialState.default).to.eql({ count: 1 });
     });
 
     it('must add initial state information to a method', function() {
         class Component {
+            initialState: any;
             method() { }
         }
         setSliceState({ count: 1 }, Component, 'method');
@@ -21,6 +22,7 @@ describe('slice state helper', function() {
 
     it('must support both class and method slice', function() {
         class Component {
+            initialState: any;
             method1() { }
             method2() { }
         }

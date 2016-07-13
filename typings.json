@@ -1,0 +1,10 @@
+{
+  "globalDependencies": {
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
+    "mocha": "registry:dt/mocha#2.2.5+20160619032855",
+    "redux": "registry:dt/redux#3.5.2+20160703092728"
+  },
+  "dependencies": {
+    "sinon": "registry:npm/sinon#1.16.0+20160427193336"
+  }
+}

@@ -6,12 +6,15 @@ describe('@Slice', function() {
 
     it('must add slice information to a class', function() {
         @Slice('class-slice')
-        class Component {}
+        class Component {
+            stateSliceAffected: any
+        }
         expect(Component.prototype.stateSliceAffected.default).to.equal('class-slice');
     });
 
     it('must add slice information to a method', function() {
         class Component {
+            stateSliceAffected: any
             @Slice('method-slice')
             method() {}
         }
@@ -22,6 +25,7 @@ describe('@Slice', function() {
     it('must support both class and method slice', function() {
         @Slice('class-slice')
         class Component {
+            stateSliceAffected: any
             @Slice('method-slice')
             method1() {}
             method2() {}
@@ -35,7 +39,10 @@ describe('@Slice', function() {
     it('must allow an initial value to be passed as the 2nd argument (class)', () => {
 
         @Slice('default', 0)
-        class Component {}
+        class Component {
+            getInitialState: Function
+            stateSliceAffected: any
+        }
         expect(Component.prototype.stateSliceAffected.default).to.equal('default');
         expect(Component.prototype.getInitialState('default')).to.equal(0);
 
@@ -44,6 +51,8 @@ describe('@Slice', function() {
     it('must allow an initial value to be passed as the 2nd argument (method)', () => {
 
         class Component {
+            getInitialState: Function
+            stateSliceAffected: any
             @Slice('default', 0)
             method() {}
         }

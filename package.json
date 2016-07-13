@@ -4,7 +4,7 @@
   "scripts": {
     "build": "webpack",
     "postinstall": "typings install",
-    "test": "webpack --env=test > /dev/null && mocha dist/redux-decorators.spec.js",
+    "test": "mocha test",
     "fixcover": "find .nyc_output/ -name \"*.json\" -exec sed -i '' 's/\\/src\\//\\/redux-decorators\\/src\\//g' {} \\;",
     "precover": "rm -fr coverage && rm -fr .nyc_output",
     "cover": "nyc npm test --extension .ts && npm run fixcover",

@@ -58,17 +58,4 @@ var config = {
     externals: getExternals()
 };
 
-var testingDecorator = function(config) {
-    var path = require('path');
-    config.entry = path.resolve('./test/all-tests.ts');
-    config.target = 'node';
-    config.output = {};
-    config.output.filename = './dist/redux-decorators.spec.js';
-    return config;
-};
-
-if (testing) {
-    config = testingDecorator(config);
-}
-
 module.exports = config;

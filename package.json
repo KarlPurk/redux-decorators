@@ -3,7 +3,11 @@
   "version": "0.4.3",
   "scripts": {
     "build": "webpack",
-    "test": "webpack --env=test > /dev/null && mocha dist/redux-decorators.spec.js"
+    "test": "webpack --env=test > /dev/null && mocha dist/redux-decorators.spec.js",
+    "fixcover": "find .nyc_output/ -name \"*.json\" -exec sed -i '' 's/\\/src\\//\\/redux-decorators\\/src\\//g' {} \\;",
+    "precover": "rm -fr coverage && rm -fr .nyc_output",
+    "cover": "nyc mocha test --extension .ts && npm run fixcover",
+    "postcover": "nyc report --reporter=lcov && rm -fr .nyc_output/"
   },
   "license": "MIT",
   "dependencies": {
@@ -13,9 +17,11 @@
   "devDependencies": {
     "mocha": "^2.4.5",
     "must": "^0.13.1",
+    "nyc": "^7.0.0",
     "sinon": "^1.17.3",
-    "typescript": "^1.7.5",
     "ts-loader": "^0.8.0",
+    "ts-node": "^0.9.3",
+    "typescript": "^1.7.5",
     "webpack": "^1.12.12",
     "yargs": "^3.32.0"
   },

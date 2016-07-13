@@ -1,4 +1,6 @@
 /dist/*spec.*
 /typings/
 /node_modules/
+/coverage/
+/.nyc_output/
 .DS_Store

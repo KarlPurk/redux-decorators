@@ -3,6 +3,7 @@
   "version": "0.4.3",
   "scripts": {
     "build": "webpack",
+    "postinstall": "typings install",
     "test": "webpack --env=test > /dev/null && mocha dist/redux-decorators.spec.js",
     "fixcover": "find .nyc_output/ -name \"*.json\" -exec sed -i '' 's/\\/src\\//\\/redux-decorators\\/src\\//g' {} \\;",
     "precover": "rm -fr coverage && rm -fr .nyc_output",

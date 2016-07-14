@@ -5,13 +5,12 @@
     "build": "webpack",
     "postinstall": "typings install",
     "test": "mocha test",
-    "fixcover": "find .nyc_output/ -name \"*.json\" -exec sed -i '' 's/\\/src\\//\\/redux-decorators\\/src\\//g' {} \\;",
     "precover": "rm -fr coverage && rm -fr .nyc_output",
     "cover": "nyc --extension .ts npm test",
-    "postcover": "nyc report --reporter=lcov && rm -fr .nyc_output/",
-    "precoveralls": "npm run precover",
-    "coveralls": "nyc --extension .ts mocha test && nyc report --reporter=text-lcov | coveralls",
-    "postcoveralls": "npm run postcover"
+    "postcover": "nyc report --reporter=text-lcov && rm -fr .nyc_output/",
+    "precoveralls": "rm -fr coverage && rm -fr .nyc_output",
+    "coveralls": "nyc --extension .ts npm test",
+    "postcoveralls": "nyc report --reporter=text-lcov | node scripts/fix-sourcemaps.js | coveralls"
   },
   "license": "MIT",
   "dependencies": {
@@ -21,6 +20,7 @@
   "devDependencies": {
     "coveralls": "^2.11.11",
     "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.2.0",
     "must": "^0.13.1",
     "nyc": "^7.0.0",
     "sinon": "^1.17.3",

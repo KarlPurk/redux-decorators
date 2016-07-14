@@ -1,12 +1,11 @@
-// parser.js
-const path = require('path');
-const {Transform} = require('stream');
-const fs = require('fs');
+var path = require('path');
+var Transform = require('stream').Transform;
+var fs = require('fs');
 
-const parseLine = (line) => {
-    const find = `${path.sep}src${path.sep}`;
-    const regex = new RegExp(`${path.sep}src${path.sep}`, 'g');
-    const replace = `${path.sep}redux-decorators${find}`;
+var parseLine = function(line) {
+    var find = path.sep + 'src' + path.sep;
+    var regex = new RegExp(path.sep + 'src' + path.sep, 'g');
+    var replace = path.sep + 'redux-decorators' + find;
     return line.replace(regex, replace);
 }
 

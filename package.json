@@ -28,8 +28,7 @@
     "ts-node": "^0.9.3",
     "typescript": "^1.7.5",
     "typings": "^1.3.1",
-    "webpack": "^1.12.12",
-    "yargs": "^3.32.0"
+    "webpack": "^1.12.12"
   },
   "description": "A ridiculously good syntax for working with Redux and TypeScript.  Currently limited to Angular 2 but could potentially be used elsewhere.",
   "main": "src/redux-decorators.js",

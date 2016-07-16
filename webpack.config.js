@@ -1,6 +1,4 @@
 var webpack = require('webpack');
-var yargs = require('yargs').argv;
-var testing = yargs.env === 'test';
 
 //------------------------------------------------------------------------------
 // https://github.com/webpack/webpack/issues/839#issuecomment-177219660

@@ -1,6 +1,6 @@
 import 'es6-shim';
 import {spy} from 'sinon';
-import {expect} from './must';
+import * as expect from 'must';
 import {Reducer, DefaultReducer, setReducer, addActionReducer, removeActionReducers, getActionReducers} from '../src/reducer.decorator';
 import {getStore} from '../src/store.decorator';
 

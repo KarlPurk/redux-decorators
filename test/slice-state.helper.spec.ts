@@ -1,5 +1,5 @@
 import 'es6-shim';
-import { expect } from './must';
+import * as expect from 'must';
 import { setSliceState } from '../src/slice-state.helper';
 
 describe('slice state helper', function() {

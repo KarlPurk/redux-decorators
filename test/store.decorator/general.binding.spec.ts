@@ -1,6 +1,6 @@
 import 'es6-shim';
 import {spy, stub} from 'sinon';
-import {expect} from './../must';
+import * as expect from 'must';
 import {generalBinding} from '../../src/store.decorator/general.binding';
 
 describe('generalBinding', function() {

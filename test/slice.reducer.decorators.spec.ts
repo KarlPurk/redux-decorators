@@ -1,5 +1,5 @@
 import 'es6-shim';
-import {expect} from './must';
+import * as expect from 'must';
 import {Slice} from '../src/slice.decorator';
 import {Reducer, DefaultReducer, removeActionReducers} from '../src/reducer.decorator';
 

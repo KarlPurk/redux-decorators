@@ -1,15 +1,15 @@
 {
-  "compilerOptions": {
-    "experimentalDecorators": true,
-    "target": "es5",
-    "sourceMap": true
-  },
-  "exclude": [
-    "dist",
-    "node_modules",
-    "test",
-    "typings"
-  ],
-  "compileOnSave": false,
-  "buildOnSave": false
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": false,
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "outDir": "build"
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "compileOnSave": false,
+    "buildOnSave": false
 }

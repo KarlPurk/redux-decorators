@@ -1,3 +1,2 @@
 --compilers ts:ts-node/register
---require test/.support/typings.ts
 test/**/*.spec.ts

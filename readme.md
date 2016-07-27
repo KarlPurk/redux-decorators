@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/KarlPurk/redux-decorators.svg)](https://travis-ci.org/KarlPurk/redux-decorators) [![Code Climate](https://codeclimate.com/github/KarlPurk/redux-decorators/badges/gpa.svg)](https://codeclimate.com/github/KarlPurk/redux-decorators) [![npm version](https://badge.fury.io/js/redux-decorators.svg)](https://badge.fury.io/js/redux-decorators)
+[![Build Status](https://travis-ci.org/KarlPurk/redux-decorators.svg?branch=master)](https://travis-ci.org/KarlPurk/redux-decorators) [![Code Climate](https://codeclimate.com/github/KarlPurk/redux-decorators/badges/gpa.svg)](https://codeclimate.com/github/KarlPurk/redux-decorators) [![npm version](https://badge.fury.io/js/redux-decorators.svg)](https://badge.fury.io/js/redux-decorators)
 
 # Redux Decorators
 

@@ -4,7 +4,7 @@
   "scripts": {
     "build": "webpack",
     "postinstall": "typings install",
-    "test": "mocha test",
+    "test": "mocha --compilers ts:ts-node/register test/",
     "precover": "rm -fr coverage && rm -fr .nyc_output",
     "cover": "nyc --extension .ts npm test",
     "postcover": "nyc report --reporter=text-lcov && rm -fr .nyc_output/",
@@ -25,7 +25,7 @@
     "nyc": "^7.0.0",
     "sinon": "^1.17.3",
     "ts-loader": "^0.8.0",
-    "ts-node": "^0.9.3",
+    "ts-node": "^1.0.0",
     "typescript": "^1.7.5",
     "typings": "^1.3.1",
     "webpack": "^1.12.12"

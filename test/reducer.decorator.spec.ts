@@ -1,3 +1,5 @@
+/// <reference path="../must.d.ts" />
+
 import 'es6-shim';
 import {spy} from 'sinon';
 import * as expect from 'must';
